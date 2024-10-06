@@ -1,43 +1,133 @@
 ﻿@model eShopSolution.ViewModels.Catalog.Categories.CategoryUpdateRequest
 @{
 
-    ViewData["Title"] = "Cập nhật danh mục";
+	ViewData["Title"] = "Cập nhật danh mục";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	var categoryAll = ViewData["CategoryAll"] as List<eShopSolution.ViewModels.Catalog.Categories.CategoryViewModel>;
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	var imageSavedHtml = !string.IsNullOrEmpty(Model.ImageSavedStr) ? Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ImageSavedStr)) : Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(""));
+
 }
 
 <style>
-    .validation-summary-valid span {
-        display: none;
-    }
+	.validation-summary-valid span {
+		display: none;
+	}
 </style>
 
 <div class="container-fluid">
-    <h1 class="mt-4">Cập nhật danh mục</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a style="color: #0779e4;" href="/">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Cập nhật danh mục</li>
-    </ol>
-    <div class="card mb-4">
-        <div class="card-header">
-            <a class="btn btn-success" asp-action="Index" asp-controller="Category">Về danh sách</a>
-        </div>
+	<h1 class="mt-4">Cập nhật danh mục</h1>
+	<ol class="breadcrumb mb-4">
+		<li class="breadcrumb-item"><a style="color: #0779e4;" href="/">Trang chủ</a></li>
+		<li class="breadcrumb-item active">Cập nhật danh mục</li>
+	</ol>
+	<div class="card mb-4">
+		<div class="card-header">
+			<a class="btn btn-success" asp-action="Index" asp-controller="Category">Về danh sách</a>
+		</div>
 
-        <div class="card-body">
-            <div class="col-md-8">
-                <form asp-action="Edit" enctype="multipart/form-data" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input asp-for="Id" type="hidden" name="Id" value="@Model.Id" />
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+		<div class="card-body">
+			<div class="col-md-8">
+				<form asp-action="Edit" enctype="multipart/form-data" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<input asp-for="Id" type="hidden" name="Id" value="@Model.Id" />
+					<div class="form-group">
+						<label asp-for="Name" class="control-label"></label>
+						<input asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Alias" class="control-label"></label>
+						<input asp-for="Alias" class="form-control" />
+						<span asp-validation-for="Alias" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IdParent" class="control-label">Category Parent</label>
+						<select asp-for="IdParent" class="form-control form-control-md">
+							@if (categoryAll != null)
+							{
+								@foreach (var item in categoryAll)
+								{
+									<option value="@item.Id">@item.Name</option>
+								}
+								<option value="0">Thư mục gốc</option>
+							}
+
+						</select>
+					</div>
+					<div class="form-group">
+						<label asp-for="Image" class="control-label"></label>
+						<input asp-for="Image" type="file" class="form-control" />
+						<span asp-validation-for="Image" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Icon saved</label>
+						<br />
+						<input id="imageSaved" type="text" data-role="tagsinput" placeholder="Add tags" />
+					</div>
+					<div class="form-group">
+						<input asp-for="ImageSavedStr" type="text" hidden class="form-control" />
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Cập nhật" class="btn btn-primary" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+
+			// Init
+			var imageSaved = @imageSavedHtml;
+			if (imageSaved) {
+				$('#imageSaved').tagsinput('add', @imageSavedHtml);
+			} else {
+				$('#imageSaved').tagsinput();
+			}
+
+
+			// event tag
+			$('#imageSaved').on('itemRemoved', function (event) {
+				var imageSavedStr = $("#imageSaved").val();
+				console.log(imageSavedStr);
+				$('#imageSavedStr').val(imageSavedStr);
+			});
+
+
+			$('#Name').on('input', function () {
+				var productcategory_name = $('#Name').val();
+				$('#Alias').val(convertToSlug(productcategory_name));
+				//console.log($(this).val()); // Logs the current value of the input field as the user types
+			});
+
+		});
+
+		function removeDiacritics(str) {
+			return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		};
+
+		function convertToSlug(str) {
+			// Bước 1: Loại bỏ dấu
+			str = removeDiacritics(str);
+
+			// Bước 2: Chuyển về chữ thường
+			str = str.toLowerCase();
+
+			// Bước 3: Thay thế các ký tự không phải là chữ cái hoặc số bằng dấu "-"
+			str = str.replace(/[^a-z0-9\s-]/g, '');
+
+			// Bước 4: Thay thế các khoảng trắng hoặc dấu "-" liên tiếp thành một dấu "-"
+			str = str.replace(/\s+/g, '-').replace(/-+/g, '-');
+
+			// Bước 5: Xóa các dấu "-" ở đầu và cuối chuỗi
+			str = str.replace(/^-+|-+$/g, '');
+
+			return str;
+		};
+	</script>
+			
+}
+

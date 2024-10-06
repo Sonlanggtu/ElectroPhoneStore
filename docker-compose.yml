@@ -1,0 +1,123 @@
+version: '3.3'
+services:
+  master: 
+    image: crawlabteam/crawlab:latest
+    container_name: crawlab_master
+    environment:
+      CRAWLAB_NODE_MASTER: "Y"
+      CRAWLAB_MONGO_HOST: "mongo"
+    volumes:
+      #- "./crawlab/master:/root/.crawlab"
+      - "/crawlab/.crawlab/master:/root/.crawlab"  # persistent crawlab metadata
+      - "/crawlab/master:/data"  # persistent crawlab data
+      - "/crawlab/log:/var/log/crawlab" # log persistent 
+    ports:    
+      - "8085:8080"
+    restart: always
+    depends_on:
+      - mongo
+
+  iis-server:
+    image: "appsvc/dotnetcore:6.0_20210409.1"
+    container_name: iis-server
+    restart: always
+    environment:
+      WEBSITE_ROLE_INSTANCE_ID: localRoleInstance
+      WEBSITE_INSTANCE_ID: localInstance
+    # networks:
+      # apitest-lan:
+        # ipv4_address: 10.0.12.10
+      # apitest-wan:
+        # ipv4_address: 172.16.12.10
+    ports:
+      - 8003:8080
+    volumes:
+      - "./IIS/Publish:/home/site/wwwroot"
+      - "./IIS/logs:/var/log"
+    depends_on:
+      - mongo
+
+  # worker01: 
+  #   image: crawlabteam/crawlab:latest
+  #   container_name: crawlab_example_worker01
+  #   environment:
+  #     CRAWLAB_NODE_MASTER: "N"
+  #     CRAWLAB_GRPC_ADDRESS: "master"
+  #     CRAWLAB_FS_FILER_URL: "http://master:8080/api/filer"
+  #   volumes:
+  #     - "./.crawlab/worker01:/root/.crawlab"
+  #   depends_on:
+  #     - master
+
+  # worker02: 
+  #   image: crawlabteam/crawlab:latest
+  #   container_name: crawlab_example_worker02
+  #   environment:
+  #     CRAWLAB_NODE_MASTER: "N"
+  #     CRAWLAB_GRPC_ADDRESS: "master"
+  #     CRAWLAB_FS_FILER_URL: "http://master:8080/api/filer"
+  #   volumes:
+  #     - "./.crawlab/worker02:/root/.crawlab"
+  #   depends_on:
+  #     - master
+  
+  # redis-master:
+        # image: 'bitnami/redis:latest'
+        # hostname: redis-master
+        # restart: "no"
+        # environment:
+            # - REDIS_REPLICATION_MODE=master
+            # - REDIS_PASSWORD=MpsStr0ng_passw0rd
+        # networks:
+            # mpmeet-lan:
+                # ipv4_address: 10.0.6.50
+        # volumes:
+            # - ./redis-master/mnt:/mnt
+            # - ./redis-master/redis-data/redis:/opt/bitnami/redis
+            # - ./redis-master/logs:/var/log
+        # ports:
+            # - 29000:6379
+    # rabbitmq-server:
+        # image: 'rabbitmq'
+        # hostname: rabbitmq-server
+        # restart: "no"
+        # environment:
+            # - RABBITMQ_DEFAULT_USER=guest
+            # - RABBITMQ_DEFAULT_PASS=guest
+        # networks:
+            # mpmeet-lan:
+                # ipv4_address: 10.0.6.100
+        # volumes:
+            # - ./rabbitmq-server/mnt:/mnt
+            # - ./rabbitmq-server/logs:/var/log
+        # ports:
+            # - 5672:5672
+
+  mongo:
+    image: mongo:4.2
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: example
+    container_name: crawlab_mongo
+    volumes:
+      - "./mongodbdata:/data/db"
+    restart: always
+
+
+  mongo-express:
+    image: mongo-express
+    container_name: crawlab_mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      # ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      # ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      # ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongo
+      
+  
+  

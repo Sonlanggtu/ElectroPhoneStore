@@ -1,0 +1,704 @@
+﻿@model eShopSolution.TechCare.Models.ProductControllerViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Detail Product Page";
+
+	string infoProductShort = string.Empty;
+	var laptopInfomation = Model.ProductViewModel.LaptopInfo;
+	if (laptopInfomation != null)
+	{
+		infoProductShort = $"{laptopInfomation.CPU},{laptopInfomation.RAM},{laptopInfomation.Disk},{laptopInfomation.Display}" ;
+	}
+	else
+	{
+		infoProductShort = Model.ProductViewModel.ShortDescription;
+	}
+}
+
+<section class="breadcrumbs">
+	<div class="container">
+		<ol class="breadcrumb"
+			itemscope
+			itemtype="https://schema.org/BreadcrumbList">
+			<li class="breadcrumb-item"
+				itemprop="itemListElement"
+				itemscope
+				itemtype="https://schema.org/ListItem">
+				<a title="Trang chủ"
+				   itemprop="item"
+				   itemtype="https://schema.org/Thing"
+				   href="/">
+					<span itemprop="name"><span data-lang="bc_home">Trang chủ</span></span>
+				</a>
+				<meta itemprop="position" content="1" />
+			</li>
+
+
+			@if (Model.ListCategoryTreeById != null && Model.ListCategoryTreeById.Any())
+			{
+				foreach (var categoryTree in Model.ListCategoryTreeById.AsEnumerable().Reverse())
+				{
+					<li class="breadcrumb-item"
+						itemprop="itemListElement"
+						itemscope
+						itemtype="https://schema.org/ListItem">
+						<a title="@categoryTree.Name"
+						   itemprop="item"
+						   itemtype="https://schema.org/Thing"
+						   href="@($"{Configuration["BaseAddress"]}/danh-muc-san-pham/{categoryTree.Alias}")"><span itemprop="name">@categoryTree.Name</span></a>
+						<meta itemprop="position" content="2" />
+					</li>
+				}
+			}
+		</ol>
+	</div>
+</section>
+
+<section class="wrap wrap-product-detail">
+	<div class="container">
+		<div class="box">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-lg-5">
+						<div class="sticky-top">
+							<div class="product-gallery">
+								<div class="f-carousel f-gallery">
+									@{
+										string productImages = Model.ProductViewModel.ProductImage;
+										if (!string.IsNullOrEmpty(productImages))
+										{
+											string[] productImagesArr = productImages.Split(",");
+											if (productImagesArr.Any())
+											{
+												foreach (var productImage in productImagesArr)
+												{
+													<div class="f-carousel__slide main"
+														 data-fancybox="galleryproduct"
+														 data-thumb-src="@($"{Configuration["BaseAddressBackend"]}{productImage}?s=1")"
+														 data-src="@($"{Configuration["BaseAddressBackend"]}{productImage}")">
+														<img class="lazyload"
+															 data-src="@($"{Configuration["BaseAddressBackend"]}{productImage}")"
+															 alt="@Model.ProductViewModel.Name" />
+													</div>
+												}
+											}
+										}
+
+									}
+									@*  <div class="f-carousel__slide main"
+									data-fancybox="galleryproduct"
+									data-thumb-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-r7000p-2021-bjyiqyg.jpg?s=1")"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-r7000p-2021-bjyiqyg.jpg")">
+									<img class="lazyload"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-r7000p-2021-bjyiqyg.jpg")"
+									alt="Lenovo Legion 5 R7000P 2021" />
+									</div> *@
+									@* <div class="f-carousel__slide main"
+									data-fancybox="galleryproduct"
+									data-thumb-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-1-rvk7c8v.jpg?s=1")"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-1-rvk7c8v.jpg")">
+									<img class="lazyload"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-1-rvk7c8v.jpg")"
+									alt="Lenovo Legion 5 R7000P 2021" />
+									</div>
+									<div class="f-carousel__slide main"
+									data-fancybox="galleryproduct"
+									data-thumb-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-rri6c8u.jpg?s=1")"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-rri6c8u.jpg")">
+									<img class="lazyload"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-rri6c8u.jpg")"
+									alt="Lenovo Legion 5 R7000P 2021" />
+									</div>
+									<div class="f-carousel__slide main"
+									data-fancybox="galleryproduct"
+									data-thumb-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-4-ohamc8w.jpg?s=1")"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-4-ohamc8w.jpg")">
+									<img class="lazyload"
+									data-src="@($"{Configuration["BaseAddressBackend"]}/image/lenovo-legion-5-15ach6h-4-ohamc8w.jpg")"
+									alt="Lenovo Legion 5 R7000P 2021" />
+									</div> *@
+								</div>
+							</div>
+							<div class="product-note type-2">
+								Giao hàng tận nơi miễn phí toàn quốc
+							</div>
+							<div class="chatnow">
+								<div class="row form-row">
+									<div class="col-6">
+										<a class="btn btn-call"
+										   title="Gọi tư vấn miễn phí"
+										   href="tel:02363663333"
+										   rel="nofollow">
+											<i class="fas fa-phone-alt"></i><span>Gọi tư vấn miễn phí</span>
+										</a>
+									</div>
+									<div class="col-6">
+										<a class="btn btn-chat"
+										   title="Chat với nhân viên tư vấn"
+										   href="https://m.me/techcare133"
+										   target="_blank"
+										   rel="nofollow">
+											<i class="fas fa-comments"></i><span>Chat với nhân viên tư vấn</span>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="form-phone" id="form-phone">
+								<div class="input-group">
+									<input type="text"
+										   class="form-control"
+										   data-field="phone"
+										   maxlength="15"
+										   placeholder="Quý khách để lại số điện thoại để được tư vấn..." />
+									<button class="btn btn-primary btn-sent"
+											title="Gửi ngay cho chúng tôi">
+										<i class="fas fa-paper-plane"></i>Gửi ngay
+									</button>
+								</div>
+							</div>
+							<p class="callorder">Thứ 2 - Chủ nhật (7h30 – 21h00)</p>
+						</div>
+					</div>
+					<div class="col-lg-7">
+						<div class="product-header">
+							<h1 class="product-name">@Model.ProductViewModel.Name</h1>
+							<div class="product-reviews-summary">
+								<p class="rating">
+									<span class="rating-box">
+										<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+										<span style="width: 0%">
+											<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+										</span>
+									</span>
+									<a class="rating-value link-scroll"
+									   title="Xem đánh giá"
+									   href="#reviewcontent"
+									   rel="nofollow">(0 đánh giá)</a>
+								</p>
+								<span class="product-code">Mã SP: </span>
+								<span class="products-sold">Đã mua: 0</span>
+							</div>
+						</div>
+						<div class="product-info" id="form-product" data-id="1172">
+							<div class="product-panel">
+									@if (Model.ProductViewModel.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											 <p class="price sell-price">@Model.ProductViewModel.PriceAfterDiscount.ToString("N0") ₫</p>
+											  <p class="old-price"><span class="sell-old-price">@Model.ProductViewModel.Price.ToString("N0") ₫</span><span class="discount">-<span class="sell-discount">-@Convert.ToUInt32(Model.ProductViewModel.DiscountPercentage)</span>%</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price sell-price">@Model.ProductViewModel.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+							</div>
+							<div class="product-panel">
+								<div class="product-attribute"
+									 id="productattributes"
+									 data-target-price=".product-info .product-item-price,.product-item-fixed .product-item-price"></div>
+							</div>
+							<div class="product-panel">
+								<div class="product-number">
+									<span>Số lượng: </span>
+									<div class="input-group spinner">
+										<button class="btn" type="button" title="Giảm">
+											-
+										</button>
+										<input type="text"
+											   class="form-control data-quantity"
+											   data-field="quantity"
+											   maxlength="4"
+											   value="1"
+											   min="1"
+											   max="9999" />
+										<button class="btn" type="button" title="Tăng">
+											+
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="product-panel addcart">
+								<div class="row row-form">
+									<div class="col-lg-6">
+										<button class="btn btn-bigbuynow" onclick="redirectCart()" title="Mua ngay">
+											MUA NGAY<span class="label">Giao hàng miễn phí toàn quốc</span>
+										</button>
+									</div>
+									<div class="col-lg-6">
+										<button class="btn btn-bigaddcart add-to-cart"
+												title="Thêm vào giỏ hàng"
+												data-id="@Model.ProductViewModel.Id"
+												data-name="@Model.ProductViewModel.Name"
+												data-price="@Model.ProductViewModel.Price.ToString("N0")"
+												data-image="@($"{Configuration["BaseAddressBackend"]}{Model.ProductViewModel.ThumbnailImage}")"
+												data-href="@($"{Configuration["BaseAddress"]}/san-pham/{Model.ProductViewModel.Alias}/{Model.ProductViewModel.Id}")"
+												data-discountpercentage="@Model.ProductViewModel.DiscountPercentage.ToString("N0")"
+												data-discountprice="@Model.ProductViewModel.DiscountPrice.ToString("N0")"
+												data-priceafterdiscount="@Model.ProductViewModel.PriceAfterDiscount.ToString("N0")"
+												data-code="@infoProductShort">
+											Thêm vào giỏ hàng<span class="label">Mua thêm sản phẩm khác</span>
+										</button>
+									</div>
+								</div>
+							</div>
+							<div class="product-promotion">
+								<div class="product-promotion-header">
+									<i class="fas fa-gift"></i>
+									<span>Ưu đãi tại TechCare</span>
+								</div>
+								<div class="product-promotion-body detail-content">
+									<ul>
+										<li>
+											Bảo dưỡng, bảo trì máy
+											<strong style="color: #0000ff">trọn đời</strong>
+										</li>
+										<li>
+											BH:
+											<strong style="color: #0000ff">6 tháng</strong> tuỳ
+											từng dòng sản phẩm
+											<a href="https://techcare.vn/chinh-sach-bao-hanh-laptop/"
+											   title="Chính sách bảo hành">(Xem chi tiết)</a>
+										</li>
+										<li>
+											Mua hàng từ xa COD: Nhận hàng trước, Thanh toán sau,
+											Miễn phí ship
+										</li>
+										<li>
+											Dùng thử miễn phí
+											<strong style="color: #0000ff">20 ngày</strong> – Hoàn
+											tiền nếu máy có lỗi
+										</li>
+										<li>
+											Tặng Balo/Cặp đựng laptop cao cấp trị giá
+											<strong style="color: #ff3300">300k</strong>, chuột
+											không dây trị giá
+											<strong style="color: #ff3300">200k</strong>, tấm lót
+											chuột trị giá
+											<strong style="color: #ff3300">50k</strong>, bộ sạc
+											cáp zin
+										</li>
+										<li>
+											Giảm <strong style="color: #ff3300">200k</strong> cho
+											ngày sinh nhật của khách hàng
+										</li>
+										<li>
+											Giảm <strong style="color: #ff3300">200k</strong> cho
+											học sinh, sinh viên và giáo viên
+										</li>
+										<li>
+											Giảm
+											<strong style="color: #ff3300">200k</strong> khách
+											hàng đã mua máy hoặc được khách hàng cũ giới thiệu
+										</li>
+										<li>
+											Giảm <strong style="color: #ff3300">20%</strong> khi
+											mua phụ kiện điện thoại và laptop
+										</li>
+										<li>
+											Trả góp lãi suất
+											<strong style="color: #ff3300">0%</strong> qua thẻ tín
+											dụng
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row d-flex flex-wrap-reverse flex-lg-wrap">
+			<div class="col-lg-8 col-left">
+				<div class="box article">
+					<div class="box-header">
+						<p class="box-title">Mô tả</p>
+					</div>
+					<div class="box-body">
+						<div class="article-body wrap-content">
+							<div class="detail-content max-height-content">
+								@Html.Raw(Model.ProductViewModel.Details)
+							</div>
+
+							<div class="show-more">
+								<button class="btn btn-viewmore"
+										data-target=".wrap-content"
+										title="Đọc tiếp nội dung">
+									Đọc tiếp nội dung <i class="far fa-level-down"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="box box-review" id="reviewcontent">
+					<div class="box-header">
+						<p class="box-title">Đánh giá sản phẩm</p>
+					</div>
+					<div class="box-body"
+						 id="productreview"
+						 data-id="@Model.ProductViewModel.Id"
+						 data-name="@Model.ProductViewModel.Name"
+						 data-image="@($"{Configuration["BaseAddressBackend"]}{Model.ProductViewModel.ThumbnailImage}")">
+						<div class="review-container">
+							<div class="row">
+								<div class="col-lg-5">
+									<div class="article-review">
+										<div class="article-review-average">
+											<div class="rating-average-container">
+												<span class="rating-average">0.0</span>
+												<div>
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-value">(0 đánh giá)</span>
+												</div>
+											</div>
+											<div class="rating-list">
+												<div class="rating-item">
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-process">
+														<span class="process-value"
+															  style="width: 0%"></span>
+													</span>
+													<span class="rating-number">0</span>
+												</div>
+												<div class="rating-item">
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-process">
+														<span class="process-value"
+															  style="width: 0%"></span>
+													</span>
+													<span class="rating-number">0</span>
+												</div>
+												<div class="rating-item">
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-process">
+														<span class="process-value"
+															  style="width: 0%"></span>
+													</span>
+													<span class="rating-number">0</span>
+												</div>
+												<div class="rating-item">
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-process">
+														<span class="process-value"
+															  style="width: 0%"></span>
+													</span>
+													<span class="rating-number">0</span>
+												</div>
+												<div class="rating-item">
+													<p class="rating">
+														<span class="rating-box">
+															<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+															<span style="width: 0%">
+																<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+															</span>
+														</span>
+													</p>
+													<span class="rating-process">
+														<span class="process-value"
+															  style="width: 0%"></span>
+													</span>
+													<span class="rating-number">0</span>
+												</div>
+											</div>
+											<div class="article-review-action text-center">
+												<button class="btn btn-secondary btn-review"
+														title="Viết đánh giá">
+													<i class="fas fa-star"></i>Viết đánh giá
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-7 review-images"></div>
+							</div>
+						</div>
+						<div class="review-list reviews"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-right">
+				<div class="box">
+					<div class="box-header">
+						<p class="box-title">Thông số kỹ thuật</p>
+					</div>
+					<div class="box-body">
+						<div class="product-info">
+							<div class="wrap-content wrap-content-spec">
+								<div class="detail-content spec-list">
+									@{
+										var laptopInfo = Model.ProductViewModel.LaptopInfo;
+										if (laptopInfo != null)
+										{
+											<ul class="parameter">
+												<li>
+													<span>Bộ vi xử lý:</span>
+													<div>
+														@Html.Raw(laptopInfo.CPU?.Replace("CPU:", ""))
+													</div>
+												</li>
+												<li>
+													<span>RAM:</span>
+													<div>@Html.Raw(laptopInfo.RAM?.Replace("RAM:", ""))</div>
+												</li>
+												<li>
+													<span>Ổ cứng:</span>
+													<div>
+														@Html.Raw(laptopInfo.Disk?.Replace("Ổ cứng:", ""))
+													</div>
+												</li>
+												<li>
+													<span>Card đồ hoạ:</span>
+													<div>@Html.Raw(laptopInfo.GPU?.Replace("Card đồ họa:", ""))</div>
+												</li>
+												<li>
+													<span>Màn hình:</span>
+													<div>
+														@Html.Raw(laptopInfo.Display?.Replace("Màn hình:", ""))
+													</div>
+												</li>
+												<li>
+													<span>Cổng kết nối:</span>
+													<div>
+														@Html.Raw(laptopInfo.Port?.Replace("Cổng kết nối:", ""))
+													</div>
+												</li>
+												<li>
+													<span>Kích thước:</span>
+													<div>@Html.Raw(laptopInfo.Size?.Replace("Kích thước:", ""))</div>
+												</li>
+												<li>
+													<span>Trọng lượng:</span>
+													<div>@Html.Raw(laptopInfo.Weight?.Replace("Trọng lượng:", ""))</div>
+												</li>
+												<li>
+													<span>Pin:</span>
+													<div>@Html.Raw(laptopInfo.Pin?.Replace("Pin:", ""))</div>
+												</li>
+											</ul>
+										}
+										else
+										{
+											@Html.Raw(Model.ProductViewModel.Description)
+										}
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Sản phẩm xem thêm</p>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var product in Model.RelationProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{product.Alias}/{product.Id}")"
+								   title="@product.Name">
+									<img alt="@product.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}{product.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{product.Alias}/{product.Id}")"
+										   title="@product.Name">@product.Name</a>
+									</h3>
+									<div class="product-item-price">
+										<p class="price">
+											@product.Price.ToString("N0") đ
+											@* <span class="discount">-14%</span> *@
+										</p>
+										@* <p class="old-price"><span>26,400,000 đ</span></p> *@
+									</div>
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@{
+												@if (product.LaptopInfo != null)
+												{
+													<span><i class="icon icon-cpu"></i>@product.LaptopInfo.CPU</span>
+													<span><i class="icon icon-ram"></i>@product.LaptopInfo.RAM</span>
+													<span><i class="icon icon-ssd"></i>@product.LaptopInfo.Disk</span>
+													<span><i class="icon icon-gpu"></i>@product.LaptopInfo.GPU</span>
+													<span><i class="icon icon-screen"></i>@product.LaptopInfo.Display</span>
+												}
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+
+				</div>
+			</div>
+		</div>
+
+
+
+
+	</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts
+{
+	@*  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> *@
+
+
+	<script type="text/javascript">
+		var lstAttrs = [
+			// {
+			//     id: "1",
+			//     name: "Cấu hình",
+			//     value: '[{"id":"1","name":"Cấu hình 1","style":"","parent":"1"}]',
+			// },
+		];
+		var lstProductAttrs = [
+			{
+				id: "@Model.ProductViewModel.Id",
+				attributevalues: "[1]",
+				img: "https://mulplat.com/image/hinh-anh-khong-ton-tai.jpg",
+				images: "",
+				code: "AMD Ryzen 7-5800H, 16 GB, SSD 512GB, Nvidia GeForce RTX 3060 6GB, 15.6 inch Full HD, 99%",
+				price: "@Model.ProductViewModel.Price",
+				//discountprice: "19900000",
+				//discount: "33",
+				startdate: "",
+				enddate: "",
+				isdefault: "1",
+				status: "1",
+				//oldprice: "29990000",
+				//savemoney: "10090000",
+			},
+		];
+
+
+		function redirectCart() {
+			window.location.href = "/cart";
+		}
+
+		// Hàm lưu giỏ hàng vào localStorage
+		function saveCart(cart) {
+			localStorage.setItem('cart', JSON.stringify(cart));
+		}
+
+		// Hàm lấy giỏ hàng từ localStorage
+		// function loadCart() {
+		// 	var cart = localStorage.getItem('cart');
+		// 	return cart ? JSON.parse(cart) : [];
+		// }
+
+		// Hàm thêm sản phẩm vào giỏ hàng
+		function addToCart(product) {
+			var cart = loadCart();
+
+			// Kiểm tra xem sản phẩm đã có trong giỏ hàng hay chưa
+			var existingProduct = cart.find(item => item.id === product.id);
+			if (existingProduct) {
+				// Nếu sản phẩm đã có, tăng số lượng
+				existingProduct.quantity += parseInt(product.quantity);
+			} else {
+				// Nếu chưa có, thêm mới sản phẩm vào giỏ
+				//product.quantity = 1;
+				cart.push(product);
+			}
+
+			// Lưu giỏ hàng
+			saveCart(cart);
+
+			//var cart = loadCart();
+			//if (cart) {
+			let lengthCart = cart.length;
+			$('.quantity-product-cart').html(lengthCart);
+			//}
+
+			showAlertInfo(product.name + 'đã được thêm vào giỏ hàng!');
+		}
+
+		// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
+		$(document).ready(function () {
+			$('.add-to-cart').click(function () {
+				let quantity = $('.data-quantity').val();
+				// Lấy thông tin sản phẩm từ phần tử HTML
+				var product = {
+					id: $(this).data('id'),
+					name: $(this).data('name'),
+					price: $(this).data('price'),
+					image: $(this).data('image'),
+					href: $(this).data('href'),
+					code: $(this).data('code'),
+					discountpercentage:$(this).data('discountpercentage'),
+					discountprice:$(this).data('discountprice'),
+					priceafterdiscount:$(this).data('priceafterdiscount'),
+					quantity: parseInt(quantity),
+				};
+
+				// Thêm sản phẩm vào giỏ hàng
+				addToCart(product);
+
+
+			});
+		});
+	</script>
+
+
+
+}

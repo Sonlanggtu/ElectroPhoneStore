@@ -38,7 +38,7 @@ namespace eShopSolution.ApiIntegration
                             .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -82,7 +82,7 @@ namespace eShopSolution.ApiIntegration
                              .Session
                              .GetString(SystemConstants.AppSettings.Token);
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var json = JsonConvert.SerializeObject(id);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -100,7 +100,7 @@ namespace eShopSolution.ApiIntegration
                             .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var json = JsonConvert.SerializeObject(id);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");

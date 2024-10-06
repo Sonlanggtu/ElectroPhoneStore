@@ -28,7 +28,7 @@ namespace eShopSolution.AdminApp.Controllers
             _categoryApiClient = categoryApiClient;
         }
 
-        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 4)
+        public async Task<IActionResult> Index(string keyword, int? categoryId, int pageIndex = 1, int pageSize = 15)
         {
             var request = new GetManageProductPagingRequest()
             {
@@ -79,6 +79,7 @@ namespace eShopSolution.AdminApp.Controllers
                 return View(request);
             }
 
+           
             var result = await _productApiClient.CreateProduct(request);
             if (result)
             {
@@ -107,6 +108,13 @@ namespace eShopSolution.AdminApp.Controllers
                 Stock = product.Stock,
                 Description = product.Description,
                 Details = product.Details,
+                ProductImageSavedStr = product.ProductImage,
+                ThumbnailImageSavedStr = product.ThumbnailImage,
+                Alias = product.Alias,
+                OrderFeatured = product.OrderFeatured,
+                Purpose = product.Purpose,
+                DiscountPercentage = product.DiscountPercentage,
+                ShortDescription = product.ShortDescription
             };
 
             return View(editVm);
@@ -178,8 +186,14 @@ namespace eShopSolution.AdminApp.Controllers
                 Description = product.Description,
                 Details = product.Details,
                 ThumbnailImage = product.ThumbnailImage,
-                ProductImage = product.ProductImage
+                ProductImage = product.ProductImage,
+                Alias = product.Alias,
+                Purpose = product.Purpose,
+                OrderFeatured = product.OrderFeatured,
+                DiscountPercentage = product.DiscountPercentage,
+                ShortDescription = product.ShortDescription
             };
+
 
             return View(detailVm);
         }

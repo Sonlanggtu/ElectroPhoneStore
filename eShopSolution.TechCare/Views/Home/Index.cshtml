@@ -1,0 +1,697 @@
+﻿@model eShopSolution.TechCare.Models.HomeViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+	ViewData["Title"] = "Home Page";
+
+}
+
+<section class="wrap banner-main">
+	<div class="container">
+		<div class="row">
+			<div class="col-menu">
+				<div class="main-menu"></div>
+			</div>
+			<div class="col-slider">
+				<div class="row">
+					<div class="col-lg-8 col-left">
+						<div class="wrap-slider">
+							<div class="f-carousel f-banner-main">
+								<div class="f-carousel__slide banner-item">
+									<a title="" href="#">
+										<img class="lazyload" data-src="@($"{Configuration["BaseAddressBackend"]}/image/laptop-slide.jpg")" alt="" />
+									</a>
+								</div>
+								<div class="f-carousel__slide banner-item">
+									<a title="" href="#"> <img class="lazyload" data-src="@($"{Configuration["BaseAddressBackend"]}/image/sua-chua-laptop.jpg")" alt="" /> </a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-right">
+						<div class="banner-list banner-list-side">
+							<a class="banner-item" href="#" title="">
+								<img class="img-block lazyload"
+									 data-src="@($"{Configuration["BaseAddressBackend"]}/image/laptop-do-hoa-bz4equ3.jpg")"
+									 alt="" />
+							</a>
+							<a class="banner-item" href="#" title="">
+								<img class="img-block lazyload"
+									 data-src="@($"{Configuration["BaseAddressBackend"]}/image/mua-laptop-tra-gop-235zqu2.jpg")"
+									 alt="" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="wrap wrap-service">
+	<div class="container">
+		<div class="box box-service">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-6 col-md-3">
+						<div class="media service-item align-items-center">
+							<span class="icon">
+								<i class="far fa-rocket-launch">&nbsp;</i>
+							</span>
+							<div class="media-body">
+								<h5 class="service-title">Giao hàng FREE</h5>
+								<span class="service-desc">Miễn phí tại Đà Nẵng</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="media service-item align-items-center">
+							<span class="icon">
+								<i class="far fa-retweet-alt">&nbsp;</i>
+							</span>
+							<div class="media-body">
+								<h5 class="service-title">20 ngày đổi trả</h5>
+								<span class="service-desc">Lỗi sản xuất - 1 đổi 1</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="media service-item align-items-center">
+							<span class="icon">
+								<i class="far fa-credit-card">&nbsp;</i>
+							</span>
+							<div class="media-body">
+								<h5 class="service-title">Thanh toán an toàn</h5>
+								<span class="service-desc">Thanh toán khi nhận hàng</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-6 col-md-3">
+						<div class="media service-item align-items-center">
+							<span class="icon">
+								<i class="far fa-comments-alt">&nbsp;</i>
+							</span>
+							<div class="media-body">
+								<h5 class="service-title">24/7 Support</h5>
+								<span class="service-desc">Hỗ trợ tận tâm</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="wrap section-category">
+	<div class="container"></div>
+</section>
+<section class="wrap">
+	<div class="container">
+		<div class="box box-product box-product-promo">
+			<div class="box-header">
+				<p class="box-title">🔥SẢN PHẨM NỔI BẬT NĂM @DateTime.Now.Year🔥</p>
+			</div>
+			<div class="box-body">
+				<div class="f-carousel f-product">
+
+					@foreach (var featuredItem in Model.FeaturedProducts)
+					{
+						<div class="f-carousel__slide">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{featuredItem.Alias}/{featuredItem.Id}")"
+								   title="@featuredItem.Name">
+									<img alt="@featuredItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{featuredItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{featuredItem.Alias}/{featuredItem.Id}")"
+										   title="@featuredItem.Name">@featuredItem.Name</a>
+									</h3>
+
+									@if (featuredItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@featuredItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(featuredItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@featuredItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@featuredItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@{
+												@if (featuredItem.LaptopInfo != null)
+												{
+													<span><i class="icon icon-cpu"></i>@featuredItem.LaptopInfo.CPU</span>
+													<span><i class="icon icon-ram"></i>@featuredItem.LaptopInfo.RAM</span>
+													<span><i class="icon icon-ssd"></i>@featuredItem.LaptopInfo.Disk</span>
+													<span><i class="icon icon-gpu"></i>@featuredItem.LaptopInfo.GPU</span>
+													<span><i class="icon icon-screen"></i>@featuredItem.LaptopInfo.Display</span>
+												}
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="wrap">
+	<div class="container"></div>
+	<div class="container">
+
+
+		<!-- laptop gaming -->
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Laptop Gaming</p>
+				<div class="scroll-right">
+					<div class="box-common-link">
+						<a href="/danh-muc-san-pham?Purpose=1&ConditionPrice=<10tr" title="Giá <10 triệu"> < 10 triệu </a>
+						<a href="/danh-muc-san-pham?Purpose=1&ConditionPrice=10tr-15tr" title="Giá từ 10-15 triệu">10-15 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=1&ConditionPrice=15tr-20tr" title="Giá từ 15-20 triệu">15-20 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=1&ConditionPrice=20tr-25tr" title="Giá từ 20-25 triệu">20-25 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=1&ConditionPrice=>25tr" title="Giá trên 25 triệu">> 25 triệu</a>
+					</div>
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var gamingItem in Model.GamingProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{gamingItem.Alias}/{gamingItem.Id}")"
+								   title="@gamingItem.Name">
+									<img alt="@gamingItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{gamingItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{gamingItem.Alias}/{gamingItem.Id}")"
+										   title="@gamingItem.Name">@gamingItem.Name</a>
+									</h3>
+
+									@if (gamingItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@gamingItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(gamingItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@gamingItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@gamingItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@if (gamingItem.LaptopInfo != null)
+											{
+												<span><i class="icon icon-cpu"></i>@gamingItem.LaptopInfo.CPU</span>
+												<span><i class="icon icon-ram"></i>@gamingItem.LaptopInfo.RAM</span>
+												<span><i class="icon icon-ssd"></i>@gamingItem.LaptopInfo.Disk</span>
+												<span><i class="icon icon-gpu"></i>@gamingItem.LaptopInfo.GPU</span>
+												<span><i class="icon icon-screen"></i>@gamingItem.LaptopInfo.Display</span>
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+
+		<!-- laptop hoc tap - van phong-->
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Laptop Học Tập - Văn Phòng</p>
+				<div class="scroll-right">
+					<div class="box-common-link">
+						<a href="/danh-muc-san-pham?Purpose=3&ConditionPrice=<10tr" title="Giá <10 triệu"> < 10 triệu </a>
+						<a href="/danh-muc-san-pham?Purpose=3&ConditionPrice=10tr-15tr" title="Giá từ 10-15 triệu">10-15 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=3&ConditionPrice=15tr-20tr" title="Giá từ 15-20 triệu">15-20 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=3&ConditionPrice=20tr-25tr" title="Giá từ 20-25 triệu">20-25 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=3&ConditionPrice=>25tr" title="Giá trên 25 triệu">> 25 triệu</a>
+					</div>
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var productItem in Model.OfficeProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+								   title="@productItem.Name">
+									<img alt="@productItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{productItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+										   title="@productItem.Name">@productItem.Name</a>
+									</h3>
+
+									@if (productItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@productItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(productItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@productItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@productItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@if (productItem.LaptopInfo != null)
+											{
+												<span><i class="icon icon-cpu"></i>@productItem.LaptopInfo.CPU</span>
+												<span><i class="icon icon-ram"></i>@productItem.LaptopInfo.RAM</span>
+												<span><i class="icon icon-ssd"></i>@productItem.LaptopInfo.Disk</span>
+												<span><i class="icon icon-gpu"></i>@productItem.LaptopInfo.GPU</span>
+												<span><i class="icon icon-screen"></i>@productItem.LaptopInfo.Display</span>
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- laptop đo hoa -->
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Laptop Đồ Họa</p>
+				<div class="scroll-right">
+					<div class="box-common-link">
+						<a href="/danh-muc-san-pham?Purpose=2&ConditionPrice=<10tr" title="Giá <10 triệu"> < 10 triệu </a>
+						<a href="/danh-muc-san-pham?Purpose=2&ConditionPrice=10tr-15tr" title="Giá từ 10-15 triệu">10-15 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=2&ConditionPrice=15tr-20tr" title="Giá từ 15-20 triệu">15-20 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=2&ConditionPrice=20tr-25tr" title="Giá từ 20-25 triệu">20-25 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=2&ConditionPrice=>25tr" title="Giá trên 25 triệu">> 25 triệu</a>
+					</div>
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var productItem in Model.GraphicsProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+								   title="@productItem.Name">
+									<img alt="@productItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{productItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+										   title="@productItem.Name">@productItem.Name</a>
+									</h3>
+
+									@if (productItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@productItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(productItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@productItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@productItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@if (productItem.LaptopInfo != null)
+											{
+												<span><i class="icon icon-cpu"></i>@productItem.LaptopInfo.CPU</span>
+												<span><i class="icon icon-ram"></i>@productItem.LaptopInfo.RAM</span>
+												<span><i class="icon icon-ssd"></i>@productItem.LaptopInfo.Disk</span>
+												<span><i class="icon icon-gpu"></i>@productItem.LaptopInfo.GPU</span>
+												<span><i class="icon icon-screen"></i>@productItem.LaptopInfo.Display</span>
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					}
+				</div>
+			</div>
+		</div>
+
+		<!-- laptop sang trong  -->
+
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Laptop Sang Trọng</p>
+				<div class="scroll-right">
+					<div class="box-common-link">
+						<a href="/danh-muc-san-pham?Purpose=4&ConditionPrice=<10tr" title="Giá <10 triệu"> < 10 triệu </a>
+						<a href="/danh-muc-san-pham?Purpose=4&ConditionPrice=10tr-15tr" title="Giá từ 10-15 triệu">10-15 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=4&ConditionPrice=15tr-20tr" title="Giá từ 15-20 triệu">15-20 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=4&ConditionPrice=20tr-25tr" title="Giá từ 20-25 triệu">20-25 triệu</a>
+						<a href="/danh-muc-san-pham?Purpose=4&ConditionPrice=>25tr" title="Giá trên 25 triệu">> 25 triệu</a>
+					</div>
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var productItem in Model.LuxuryProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+								   title="@productItem.Name">
+									<img alt="@productItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{productItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/san-pham/{productItem.Alias}/{productItem.Id}")"
+										   title="@productItem.Name">@productItem.Name</a>
+									</h3>
+
+									@if (productItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@productItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(productItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@productItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@productItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+									<div class="product-item-bottom">
+										<div class="product-item-bottom-spec">
+											@if (productItem.LaptopInfo != null)
+											{
+												<span><i class="icon icon-cpu"></i>@productItem.LaptopInfo.CPU</span>
+												<span><i class="icon icon-ram"></i>@productItem.LaptopInfo.RAM</span>
+												<span><i class="icon icon-ssd"></i>@productItem.LaptopInfo.Disk</span>
+												<span><i class="icon icon-gpu"></i>@productItem.LaptopInfo.GPU</span>
+												<span><i class="icon icon-screen"></i>@productItem.LaptopInfo.Display</span>
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="box box-product">
+			<div class="box-header">
+				<p class="box-title">Phụ kiện Laptop</p>
+				<div class="scroll-right">
+					<div class="box-common-link">
+						<a href="#" title="Xem thêm">Xem thêm</a>
+					</div>
+				</div>
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+					@foreach (var productItem in Model.AccessoriesProducts)
+					{
+						<div class="col-product">
+							<div class="product-item">
+								<a class="product-item-img"
+								   href="@($"{Configuration["BaseAddress"]}/phu-kien/{productItem.Alias}/{productItem.Id}")"
+								   title="@productItem.Name">
+									<img alt="@productItem.Name"
+										 class="lazyload"
+										 data-src="@($"{Configuration["BaseAddressBackend"]}/{productItem.ThumbnailImage}?s=3")" />
+								</a>
+								<div class="product-body">
+									<h3 class="product-item-title">
+										<a href="@($"{Configuration["BaseAddress"]}/phu-kien/{productItem.Alias}/{productItem.Id}")"
+										   title="@productItem.Name">@productItem.Name</a>
+									</h3>
+									@* <div class="product-item-price">
+										<p class="price">@productItem.Price.ToString("N0") đ</p>
+									</div> *@
+
+
+									@if (productItem.DiscountPercentage != 0)
+									{
+										<div class="product-item-price">
+											<p class="price">@productItem.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(productItem.DiscountPercentage)%</span></p>
+											<p class="old-price"><span>@productItem.Price.ToString("N0") đ</span></p>
+										</div>
+									}
+									else
+									{
+										<div class="product-item-price">
+											<div class="product-item-price">
+												<p class="price">@productItem.Price.ToString("N0") đ</p>
+											</div>
+										</div>
+									}
+
+								</div>
+							</div>
+						</div>
+					}
+
+
+					@* <div class="col-product">
+					<div class="product-item">
+					<a class="product-item-img"
+					href="thay-pin-laptop-dell/"
+					title="Pin Laptop Dell">
+					<img alt="Pin Laptop Dell"
+					class="lazyload"
+					data-src="./image/thay-pin-laptop-dell-owa3qvb.jpg?s=3" />
+					</a>
+					<div class="product-body">
+					<h3 class="product-item-title">
+					<a href="thay-pin-laptop-dell/"
+					title="Pin Laptop Dell">Pin Laptop Dell</a>
+					</h3>
+					<div class="product-item-price">
+					<p class="price">350,000 đ</p>
+					</div>
+					</div>
+					</div>
+					</div> *@
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+
+
+
+
+	@* <div class="container">
+	<div class="box box-news">
+	<div class="box-header">
+	<p class="box-title">Tin tức mới</p>
+	</div>
+	<div class="box-body">
+	<div class="row">
+	<div class="col-lg-4">
+	<div class="news-item news-item-vertical">
+	<div class="news-item-img">
+	<a href="tai-ngay-phan-mem-adobe-photoshop-cc-chinh-sua-anh-chuyen-nghiep/"
+	title="Tải ngay phần mềm Adobe Photoshop CC - Chỉnh sửa ảnh chuyên nghiệp">
+	<img alt="Tải ngay phần mềm Adobe Photoshop CC - Chỉnh sửa ảnh chuyên nghiệp"
+	class="lazyload"
+	data-src="./image/tai-ngay-phan-mem-adobe-photoshop-cc-chinh-sua-anh-chuyen-nghiep-9lxyqoc.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="tai-ngay-phan-mem-adobe-photoshop-cc-chinh-sua-anh-chuyen-nghiep/"
+	title="Tải ngay phần mềm Adobe Photoshop CC - Chỉnh sửa ảnh chuyên nghiệp">
+	Tải ngay phần mềm Adobe Photoshop CC - Chỉnh sửa ảnh
+	chuyên nghiệp
+	</a>
+	</h5>
+	<p class="news-item-time">01-11-2023 17:25</p>
+	<p class="news-item-desc">
+	Photoshop được phát triển và xuất bản bởi Adobe, là một
+	chương trình chỉnh sửa đồ họa mạnh mẽ được sử dụng bởi các
+	chuyên gia cũng như những người đam mê. Nó có sẵn cho cả
+	Mac OS và Windows và đã trở thành tiêu chuẩn công nghiệp
+	để chỉnh sửa hình ảnh.
+	</p>
+	</div>
+	</div>
+	</div>
+	<div class="col-lg-4">
+	<div class="news-item news-item-vertical">
+	<div class="news-item-img">
+	<a href="tai-phan-mem-itools-quan-ly-cac-thiet-bi-apple/"
+	title="Tải phần mềm iTools - Quản lý các thiết bị Apple">
+	<img alt="Tải phần mềm iTools - Quản lý các thiết bị Apple"
+	class="lazyload"
+	data-src="./image/tai-phan-mem-itools-quan-ly-cac-thiet-bi-apple-9iz7qn9.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="tai-phan-mem-itools-quan-ly-cac-thiet-bi-apple/"
+	title="Tải phần mềm iTools - Quản lý các thiết bị Apple">Tải phần mềm iTools - Quản lý các thiết bị Apple</a>
+	</h5>
+	<p class="news-item-time">01-11-2023 17:13</p>
+	<p class="news-item-desc">
+	Trong thời đại kỹ thuật số ngày nay, nhu cầu ngày càng
+	tăng đối với các công cụ cho phép người dùng thao tác cài
+	đặt thiết bị của họ và bỏ qua một số hạn chế nhất định.
+	Một công cụ như vậy đã trở nên phổ biến là iTools.
+	</p>
+	</div>
+	</div>
+	</div>
+	<div class="col-lg-4">
+	<div class="news-item news-item-horizontal">
+	<div class="news-item-img">
+	<a href="huong-dan-download-amiduos/"
+	title="Hướng dẫn Download AMIDuOS">
+	<img alt="Hướng dẫn Download AMIDuOS"
+	class="lazyload"
+	data-src="./image/huong-dan-download-amiduos-2c71qvf.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="huong-dan-download-amiduos/"
+	title="Hướng dẫn Download AMIDuOS">Hướng dẫn Download AMIDuOS</a>
+	</h5>
+	<p class="news-item-time">01-11-2023 17:06</p>
+	</div>
+	</div>
+	<div class="news-item news-item-horizontal">
+	<div class="news-item-img">
+	<a href="huong-dan-download-foxit-reader/"
+	title="Hướng dẫn Download Foxit Reader">
+	<img alt="Hướng dẫn Download Foxit Reader"
+	class="lazyload"
+	data-src="./image/huong-dan-download-foxit-reader-9niiqvd.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="huong-dan-download-foxit-reader/"
+	title="Hướng dẫn Download Foxit Reader">Hướng dẫn Download Foxit Reader</a>
+	</h5>
+	<p class="news-item-time">01-11-2023 17:00</p>
+	</div>
+	</div>
+	<div class="news-item news-item-horizontal">
+	<div class="news-item-img">
+	<a href="huong-dan-download-karafun/"
+	title="Hướng dẫn Download KaraFun">
+	<img alt="Hướng dẫn Download KaraFun"
+	class="lazyload"
+	data-src="./image/huong-dan-download-karafun-r9tqqwp.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="huong-dan-download-karafun/"
+	title="Hướng dẫn Download KaraFun">Hướng dẫn Download KaraFun</a>
+	</h5>
+	<p class="news-item-time">31-10-2023 17:27</p>
+	</div>
+	</div>
+	<div class="news-item news-item-horizontal">
+	<div class="news-item-img">
+	<a href="huong-dan-download-camtasia-studio/"
+	title="Hướng dẫn Download Camtasia Studio">
+	<img alt="Hướng dẫn Download Camtasia Studio"
+	class="lazyload"
+	data-src="./image/huong-dan-download-camtasia-studio-b8pxqwq.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="huong-dan-download-camtasia-studio/"
+	title="Hướng dẫn Download Camtasia Studio">Hướng dẫn Download Camtasia Studio</a>
+	</h5>
+	<p class="news-item-time">31-10-2023 16:59</p>
+	</div>
+	</div>
+	<div class="news-item news-item-horizontal">
+	<div class="news-item-img">
+	<a href="huong-dan-download-proshow-producer-9/"
+	title="Hướng dẫn Download ProShow Producer 9">
+	<img alt="Hướng dẫn Download ProShow Producer 9"
+	class="lazyload"
+	data-src="./image/huong-dan-download-proshow-producer-9-9qalqwr.jpg?s=20" />
+	</a>
+	</div>
+	<div class="news-body">
+	<h5 class="news-item-title">
+	<a href="huong-dan-download-proshow-producer-9/"
+	title="Hướng dẫn Download ProShow Producer 9">Hướng dẫn Download ProShow Producer 9</a>
+	</h5>
+	<p class="news-item-time">31-10-2023 16:44</p>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div> *@
+</section>

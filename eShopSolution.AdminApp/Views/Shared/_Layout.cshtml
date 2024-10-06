@@ -9,8 +9,20 @@
     <title>@ViewData["Title"] - Administration</title>
     <link href="/css/styles.css" rel="stylesheet" />
     <link href="~/css/mystyle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/dist/themes/default/style.min.css" />
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <style>
+              .bootstrap-tagsinput .tag {
+            background-color: #5bc0de;
+            padding: 3px 7px;
+            margin-right: 2px;
+            color: white;
+            border-radius: 3px;
+        }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+    
     <!--sweet aler 2-->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -35,18 +47,18 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-list-ul"></i></div>
                             Danh mục
                         </a>
-                        <a class="nav-link" asp-controller="User" asp-action="Index">
+                        @* <a class="nav-link" asp-controller="User" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-address-book"></i></div>
                             Khách hàng
-                        </a>
+                        </a> *@
                         <a class="nav-link" asp-controller="Order" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fa fa-shopping-cart"></i></div>
                             Đơn hàng
                         </a>
-                        <a class="nav-link" asp-controller="Coupon" asp-action="Index">
+                        @* <a class="nav-link" asp-controller="Coupon" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fa fa-credit-card"></i></div>
                             Khuyến mãi
-                        </a>
+                        </a> *@
                     </div>
                 </div>
             </nav>
@@ -66,6 +78,8 @@
     </div>
     <script src="/js/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+    <script src="~/lib/dist/jstree.js"></script>
     <script src="/js/scripts.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

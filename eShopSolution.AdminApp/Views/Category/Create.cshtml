@@ -3,8 +3,8 @@
 @{
 
     ViewData["Title"] = "Tạo mới danh mục";
-
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var categoryAll = ViewData["CategoryAll"] as List<eShopSolution.ViewModels.Catalog.Categories.CategoryViewModel>;
 }
 
 <style>
@@ -35,6 +35,30 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="Alias" class="control-label"></label>
+                        <input asp-for="Alias" class="form-control" />
+                        <span asp-validation-for="Alias" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="idParent" class="control-label">Category Parent</label>
+                        <select asp-for="idParent" class="form-control form-control-md">
+                            @if (categoryAll != null)
+                            {
+                                @foreach (var item in categoryAll)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                                <option value="0">Thư mục gốc</option>
+                            }
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input asp-for="Image" type="file" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <input type="submit" value="Tạo mới" class="btn btn-primary" />
                     </div>
                 </form>
@@ -42,5 +66,41 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Name').on('input', function () {
+                var productcategory_name = $('#Name').val();
+                $('#Alias').val(convertToSlug(productcategory_name));
+                //console.log($(this).val()); // Logs the current value of the input field as the user types
+            });
+        });
+
+        function removeDiacritics(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+
+        function convertToSlug(str) {
+            // Bước 1: Loại bỏ dấu
+            str = removeDiacritics(str);
+
+            // Bước 2: Chuyển về chữ thường
+            str = str.toLowerCase();
+
+            // Bước 3: Thay thế các ký tự không phải là chữ cái hoặc số bằng dấu "-"
+            str = str.replace(/[^a-z0-9\s-]/g, '');
+
+            // Bước 4: Thay thế các khoảng trắng hoặc dấu "-" liên tiếp thành một dấu "-"
+            str = str.replace(/\s+/g, '-').replace(/-+/g, '-');
+
+            // Bước 5: Xóa các dấu "-" ở đầu và cuối chuỗi
+            str = str.replace(/^-+|-+$/g, '');
+
+            return str;
+        };
+    </script>
+}
 
 

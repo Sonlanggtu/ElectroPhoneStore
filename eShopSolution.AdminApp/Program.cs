@@ -13,7 +13,7 @@ namespace eShopSolution.AdminApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+			CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -21,6 +21,13 @@ namespace eShopSolution.AdminApp
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+
+					//var config = new ConfigurationBuilder()
+			          //.AddJsonFile("appsettings.json", optional: false)
+			          //.Build();
+
+                    //string hostUrl = config["HostUrl"];
+					//webBuilder.UseUrls(hostUrl);
+				});
     }
 }

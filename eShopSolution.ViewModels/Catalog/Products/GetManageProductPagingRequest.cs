@@ -10,7 +10,10 @@ namespace eShopSolution.ViewModels.Catalog.Products
         public string Keyword { get; set; }
 
         public int? CategoryId { get; set; }
+        public string CategoryUrl { get; set; }
+        public int Purpose { set; get; }
 
         public string? SortOption { get; set; }
-    }
+		public string? ConditionPrice { get; set; }
+	}
 }

@@ -10,7 +10,7 @@ namespace eShopSolution.Application.Catalog.Orders
 {
     public interface IOrderService
     {
-        int Create(CheckoutRequest request);
+        Task<int> Create(CheckoutRequest request);
 
         Task<PagedResult<OrderViewModel>> GetAllPaging(GetManageOrderPagingRequest request);
 

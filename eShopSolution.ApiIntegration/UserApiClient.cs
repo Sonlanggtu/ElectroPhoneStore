@@ -1,4 +1,5 @@
-﻿using eShopSolution.ViewModels.Common;
+﻿using eShopSolution.Utilities.Constants;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -30,14 +31,15 @@ namespace eShopSolution.ApiIntegration
 
         public async Task<ApiResult<string>> Authenticate(LoginRequest request)
         {
-            var json = JsonConvert.SerializeObject(request);
+
+			var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             /* Tạo một client có base address là backend api và truyền vào hàm authenticate 
              của backend api một httpcontent vừa tạo ở trên sau đó sẽ trả về response một
             */
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
 
             var response = await client.PostAsync("/api/users/authenticate", httpContent);
 
@@ -54,7 +56,8 @@ namespace eShopSolution.ApiIntegration
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.DeleteAsync($"/api/users/{id}");
@@ -72,7 +75,7 @@ namespace eShopSolution.ApiIntegration
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.GetAsync($"/api/users/{id}");
@@ -90,7 +93,7 @@ namespace eShopSolution.ApiIntegration
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.GetAsync($"/api/users/getByUserName/{userName}");
@@ -108,7 +111,7 @@ namespace eShopSolution.ApiIntegration
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.GetAsync($"/api/users/getAllUser");
@@ -127,7 +130,7 @@ namespace eShopSolution.ApiIntegration
 
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.GetAsync($"/api/users/paging?pageIndex=" +
@@ -143,7 +146,7 @@ namespace eShopSolution.ApiIntegration
         public async Task<ApiResult<string>> RegisterUser(RegisterRequest registerRequest)
         {
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
 
             var json = JsonConvert.SerializeObject(registerRequest);
 
@@ -163,7 +166,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -186,7 +189,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -212,7 +215,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -238,7 +241,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -264,7 +267,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -290,7 +293,7 @@ namespace eShopSolution.ApiIntegration
         {
             var client = _httpClientFactory.CreateClient();
             // BaseAddress lấy trong appsettings.Development.json bằng Configuratrion
-            client.BaseAddress = new Uri(_configuration["BaseAddress"]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             var sessions = _httpContextAccessor.HttpContext.Session.GetString("Token");
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);

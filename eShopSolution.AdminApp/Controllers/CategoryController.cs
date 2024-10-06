@@ -3,6 +3,8 @@ using eShopSolution.ViewModels.Catalog.Categories;
 using System.Threading.Tasks;
 using eShopSolution.ApiIntegration;
 using eShopSolution.ViewModels.Catalog.Products;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace eShopSolution.AdminApp.Controllers
 {
@@ -15,7 +17,7 @@ namespace eShopSolution.AdminApp.Controllers
             _categoryApiClient = categoryApiClient;
         }
 
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 1000)
         {
             var request = new GetManageProductPagingRequest()
             {
@@ -24,17 +26,34 @@ namespace eShopSolution.AdminApp.Controllers
                 PageSize = pageSize,
             };
 
-            var data = await _categoryApiClient.GetAllPaging(request);
-            if (TempData["result"] != null)
+            var categoryTrees = new List<CategoryTreeModel>();
+
+            var categoryPaging = await _categoryApiClient.GetAllPaging(request);
+            var categoryAll = await _categoryApiClient.GetAll();
+            foreach (var category in categoryAll)
+            {
+				var categoryItem = new CategoryTreeModel();
+				categoryItem.id = category.Id.ToString();
+				categoryItem.text = category.Name;
+				categoryItem.parent = category.idParent == 0 ? "#" : category.idParent.ToString();
+				categoryTrees.Add(categoryItem);
+			}
+
+            ViewData["CategoryAll"] = categoryAll;
+			ViewBag.CategoryTree = JsonConvert.SerializeObject(categoryTrees);
+
+			if (TempData["result"] != null)
             {
                 ViewBag.SuccessMsg = TempData["result"];
             }
-            return View(data);
+            return View(categoryPaging);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var categoryAll = await _categoryApiClient.GetAll();
+            ViewData["CategoryAll"] = categoryAll;
             return View();
         }
 
@@ -44,7 +63,8 @@ namespace eShopSolution.AdminApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(request);
+				ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+				return View(request);
             }
 
             var result = await _categoryApiClient.CreateCategory(request);
@@ -55,7 +75,8 @@ namespace eShopSolution.AdminApp.Controllers
             }
 
             ModelState.AddModelError("", "Thêm danh mục thất bại");
-            return View(request);
+			ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+			return View(request);
         }
 
         [HttpGet]
@@ -66,10 +87,14 @@ namespace eShopSolution.AdminApp.Controllers
             var editVm = new CategoryUpdateRequest()
             {
                 Id = id,
-                Name = categories.Name
-            };
+                Name = categories.Name,
+                IdParent = categories.idParent,
+                Alias = categories.Alias,
+                ImageSavedStr = categories.Image,
 
-            return View(editVm);
+            };
+			ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+			return View(editVm);
         }
 
         [HttpPost]
@@ -78,7 +103,8 @@ namespace eShopSolution.AdminApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(request);
+				ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+				return View(request);
             }
 
             var result = await _categoryApiClient.UpdateCategory(request);
@@ -89,7 +115,8 @@ namespace eShopSolution.AdminApp.Controllers
             }
 
             ModelState.AddModelError("", "Cập nhật danh mục thất bại");
-            return View(request);
+			ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+			return View(request);
         }
 
         [HttpGet]
@@ -115,7 +142,8 @@ namespace eShopSolution.AdminApp.Controllers
             }
 
             ModelState.AddModelError("", "Xóa danh mục không thành công");
-            return View(request);
+			ViewData["CategoryAll"] = await _categoryApiClient.GetAll();
+			return View(request);
         }
     }
 }

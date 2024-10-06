@@ -1,0 +1,554 @@
+﻿@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Cart";
+}
+
+<section class="wrap">
+	<div class="container">
+		<div class="content-wrap content-wrap-success">
+			<div class="top-content">
+				<a class="buy-more" title="Mua thêm sản phẩm khác" href="/"><i class="fa fa-arrow-left"></i>Mua thêm sản phẩm khác</a>
+				<span>Giỏ hàng của bạn</span>
+			</div>
+			<div class="box box-border box-cart form-order" id="frmCarts">
+				<div class="box-body section_body">
+					<div class="body_content">
+
+
+						<div class="list-cart">
+							<div id="cart-items"></div>
+						</div>
+						<div class="total-price"><strong>Tổng tiền (VND):</strong><strong data-field="total" class="total_price">0</strong></div>
+						<div class="line-break"></div>
+						<div class="form-cart-info">
+							<p class="customer-title">Thông tin liên hệ</p>
+							<div class="cart-info-user">
+								<div class="row">
+									<div class="col-sm-6 form-group">
+										<input type="text" class="form-control ReceiveName" placeholder="Họ tên (Bắt buộc)" data-field="ReceiveName" data-required="1" data-title="Họ tên">
+									</div>
+									<div class="col-sm-6 form-group">
+										<input type="text" class="form-control ReceivePhone" placeholder="Điện thoại (Bắt buộc)" data-field="ReceivePhone" data-required="1" data-title="Điện thoại">
+									</div>
+								</div>
+								<div class="form-group">
+									<textarea class="form-control ReceiveNote" placeholder="Ghi chú..." style="width:100%;resize:none;" rows="2" data-field="Note"></textarea>
+								</div>
+								@* <p class="customer-title">Chọn cách thức nhận hàng</p>
+								<div class="cart-info-user">
+								<div class="form-group">
+								<label class="form-check-label"><input type="radio" name="radCartShip" value="1">Giao tận nơi</label>
+								<label class="form-check-label"><input type="radio" name="radCartShip" value="2" checked="checked">Nhận tại cửa hàng</label>
+								</div>
+								<div class="d-flex flex-column cart-address none">
+								<div class="row">
+								<div class="col-sm-6 form-group">
+								<div class="dropdown bootstrap-select form-control">
+								<select class="form-control selectpicker" data-live-search="true" data-size="8" data-field="ReceiveCityId" data-required="1" data-title="Tỉnh Thành" tabindex="-98">
+								<option class="bs-title-option" value=""></option>
+								<option value="-1">-- Chọn Tỉnh/Thành --</option>
+								<option value="63">TP.HCM</option>
+								<option value="24">Hà Nội</option>
+								<option value="25">Hà Tĩnh</option>
+								<option value="26">Hải Dương</option>
+								<option value="27">Hải Phòng</option>
+								<option value="28">Hậu Giang</option>
+								<option value="29">Hòa Bình</option>
+								<option value="30">Hưng Yên</option>
+								<option value="31">Khánh Hòa</option>
+								<option value="32">Kiên Giang</option>
+								<option value="33">Kom Tum</option>
+								<option value="34">Lai Châu</option>
+								<option value="35">Lâm Đồng</option>
+								<option value="36">Lạng Sơn</option>
+								<option value="37">Lào Cai</option>
+								<option value="38">Long An</option>
+								<option value="39">Nam Định</option>
+								<option value="40">Nghệ An</option>
+								<option value="41">Ninh Bình</option>
+								<option value="42">Ninh Thuận</option>
+								<option value="43">Phú Thọ</option>
+								<option value="44">Phú Yên</option>
+								<option value="45">Quảng Bình</option>
+								<option value="46">Quảng Nam</option>
+								<option value="47">Quảng Ngãi</option>
+								<option value="48">Quảng Ninh</option>
+								<option value="49">Quảng Trị</option>
+								<option value="50">Sóc Trăng</option>
+								<option value="51">Sơn La</option>
+								<option value="52">Tây Ninh</option>
+								<option value="53">Thái Bình</option>
+								<option value="54">Thái Nguyên</option>
+								<option value="55">Thanh Hóa</option>
+								<option value="56">Thừa Thiên Huế</option>
+								<option value="57">Tiền Giang</option>
+								<option value="58">Trà Vinh</option>
+								<option value="59">Tuyên Quang</option>
+								<option value="60">Vĩnh Long</option>
+								<option value="61">Vĩnh Phúc</option>
+								<option value="62">Yên Bái</option>
+								<option value="1">An Giang</option>
+								<option value="2">Bà Rịa - Vũng Tàu</option>
+								<option value="3">Bắc Giang</option>
+								<option value="4">Bắc Kạn</option>
+								<option value="5">Bạc Liêu</option>
+								<option value="6">Bắc Ninh</option>
+								<option value="7">Bến Tre</option>
+								<option value="8">Bình Định</option>
+								<option value="9">Bình Dương</option>
+								<option value="10">Bình Phước</option>
+								<option value="11">Bình Thuận</option>
+								<option value="12">Cà Mau</option>
+								<option value="13">Cao Bằng</option>
+								<option value="14">Cần Thơ</option>
+								<option value="15">Đà Nẵng</option>
+								<option value="16">Đắk Lắk</option>
+								<option value="17">Đắk Nông</option>
+								<option value="18">Điện Biên</option>
+								<option value="19">Đồng Nai</option>
+								<option value="20">Đồng Tháp</option>
+								<option value="21">Gia Lai</option>
+								<option value="22">Hà Giang</option>
+								<option value="23">Hà Nam</option>
+								</select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="-- Chọn Tỉnh/Thành --"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">-- Chọn Tỉnh/Thành --</div></div> </div></button><div class="dropdown-menu " role="combobox" style="max-height: 365px; overflow: hidden; min-width: 177px;"><div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off" role="textbox" aria-label="Search"></div><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="max-height: 312px; overflow-y: auto;"><ul class="dropdown-menu inner show"><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">-- Chọn Tỉnh/Thành --</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">TP.HCM</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hà Nội</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hà Tĩnh</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hải Dương</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hải Phòng</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hậu Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hòa Bình</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hưng Yên</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Khánh Hòa</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Kiên Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Kom Tum</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Lai Châu</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Lâm Đồng</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Lạng Sơn</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Lào Cai</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Long An</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Nam Định</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Nghệ An</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Ninh Bình</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Ninh Thuận</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Phú Thọ</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Phú Yên</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Quảng Bình</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Quảng Nam</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Quảng Ngãi</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Quảng Ninh</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Quảng Trị</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Sóc Trăng</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Sơn La</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Tây Ninh</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Thái Bình</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Thái Nguyên</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Thanh Hóa</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Thừa Thiên Huế</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Tiền Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Trà Vinh</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Tuyên Quang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Vĩnh Long</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Vĩnh Phúc</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Yên Bái</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">An Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bà Rịa - Vũng Tàu</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bắc Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bắc Kạn</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bạc Liêu</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bắc Ninh</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bến Tre</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bình Định</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bình Dương</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bình Phước</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Bình Thuận</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Cà Mau</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Cao Bằng</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Cần Thơ</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Đà Nẵng</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Đắk Lắk</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Đắk Nông</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Điện Biên</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Đồng Nai</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Đồng Tháp</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Gia Lai</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hà Giang</span></a></li><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">Hà Nam</span></a></li></ul></div></div>
+								</div>
+								</div>
+								<div class="col-sm-6 form-group">
+								<div class="dropdown bootstrap-select form-control">
+								<select class="form-control selectpicker" data-live-search="true" data-size="8" data-field="ReceiveDistrictId" data-required="1" data-title="Quận Huyện" tabindex="-98">
+								<option class="bs-title-option" value=""></option>
+								<option value="-1">-- Chọn Quận/Huyện --</option>
+								</select><button type="button" class="btn dropdown-toggle btn-light" data-toggle="dropdown" role="button" title="-- Chọn Quận/Huyện --"><div class="filter-option"><div class="filter-option-inner"><div class="filter-option-inner-inner">-- Chọn Quận/Huyện --</div></div> </div></button><div class="dropdown-menu " role="combobox" style="overflow: hidden;"><div class="bs-searchbox"><input type="text" class="form-control" autocomplete="off" role="textbox" aria-label="Search"></div><div class="inner show" role="listbox" aria-expanded="false" tabindex="-1" style="overflow-y: auto;"><ul class="dropdown-menu inner show"><li><a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false"><span class="text">-- Chọn Quận/Huyện --</span></a></li></ul></div></div>
+								</div>
+								</div>
+								</div>
+								<div class="form-group">
+								<input type="text" class="form-control" placeholder="Địa chỉ (Bắt buộc)" data-field="ReceiveAddress" data-required="1" data-title="Địa chỉ">
+								</div>
+								</div>
+								<div class="d-flex flex-column cart-shop"><div class="form-group"><label class="form-check-label"><input type="radio" name="radCartShop" value="1">TechCare Đà Nẵng : 133 – 135 Hàm Nghi, Vĩnh Trung, Thanh Khê, Đà Nẵng - Hotline: 0888.333.135</label></div><div class="form-group"><label class="form-check-label"><input type="radio" name="radCartShop" value="2">TechCare Đà Nẵng : 99 – 101 Hàm Nghi, Vĩnh Trung, Thanh Khê, Đà Nẵng - Hotline: 0911.136.888</label></div><div class="form-group"><label class="form-check-label"><input type="radio" name="radCartShop" value="3">TechCare Đà Nẵng : 101 Nguyễn Văn Thoại, Bắc Mỹ Phú, Sơn Trà, Đà Nẵng - Hotline: 0889.133.135</label></div></div>
+								</div>
+								<p class="customer-title">Hình thức thanh toán</p>
+								<div class="cart-info-user">
+								<div class="form-group" data-field="PaymentMethodId">
+								<label class="form-check-label"><input type="radio" name="radPayment" value="1" checked="checked" data-target=".cart-bank">Thanh toán tiền mặt (COD)</label>
+								<label class="form-check-label"><input type="radio" name="radPayment" value="2" data-target=".cart-bank">Chuyển khoản ngân hàng</label>
+								</div>
+								</div> *@
+							</div>
+						</div>
+						<div class="line-break"></div>
+						<div class="total-price"><strong>Tổng tiền (VND):</strong><strong data-field="total" class="total_price">0</strong></div>
+						<div class="form-group">
+							<button class="btn btn-primary btn-order" title="Đặt hàng ngay">ĐẶT HÀNG NGAY</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+@* <div class="box-body">
+                <h3 class="box-success-title"><i class="fas fa-check-circle"></i><span>Đặt hàng thành công</span></h3>
+                <p class="text-center">Cám ơn <strong>"fds"</strong> đã đặt hàng với Chúng tôi.</p>
+                <p class="text-center">Vui lòng kiểm tra lại thông tin đơn đặt hàng của bạn</p>
+                <div class="box-cart-info">
+                    <p class="info-title">Đơn hàng <span>#DH0000018</span> (Đặt lúc 20-09-2024 02:34)</p>
+                    <ul>
+                        <li><span>Người nhận hàng:</span><span>fds</span></li>
+                        <li><span>Điện thoại:</span><span>fsdf</span></li>
+                                <li><span>Nhận tại cửa hàng:</span><span>TechCare Đà Nẵng - 133 – 135 Hàm Nghi, Vĩnh Trung, Thanh Khê, Đà Nẵng</span></li>
+                        <li><span>Yêu cầu khác:</span><span>ss</span></li>
+                        <li><span>Hình thức thanh toán:</span><span>Thanh toán tiền mặt khi nhận hàng (COD)</span></li>
+                    </ul>
+                </div>
+                <p class="customer-title">Sản phẩm đã mua</p>
+                <div class="list-cart">
+                    <div class="product-item">
+                            <div class="product-item-img"><span><img class=" lazyloaded" alt="HP Envy x360 2-in-1 14-es1013dx 2024" data-src="https://techcare.net.vn/image/hp-envy-x360-2in1es1013dx-2024-olgvq47.jpg?s=3" src="https://techcare.net.vn/image/hp-envy-x360-2in1es1013dx-2024-olgvq47.jpg?s=3"></span></div>
+                            <div class="product-info">
+                                <div class="product-info-top">
+                                    <div class="product-item-info">
+                                        <p class="product-item-title">HP Envy x360 2-in-1 14-es1013dx 2024</p>
+                                        <p style="margin-bottom:8px;">Số lượng: 1</p>
+                                    </div>
+                                    <div class="price-number">
+                                        <div class="product-item-price">
+                                            <p class="price">15,400,000</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="total-price"><strong>Tổng tiền:</strong><strong>15,400,000</strong></div>
+                <div class="form-group">
+                    <a class="btn btn-primary btn-order" title="Hãy tiếp tục mua hàng" href="https://techcare.net.vn">Hãy tiếp tục mua hàng →</a>
+                </div>
+            </div> *@
+
+
+
+
+
+@section Scripts {
+	<script>
+
+		function displayCart() {
+			var cart = loadCart();
+			var $cartItems = $('#cart-items');
+
+			// Xóa nội dung cũ
+			$cartItems.empty();
+
+			// Nếu giỏ hàng trống
+			if (cart.length === 0) {
+				$cartItems.append('<p style="text-align: center; font-size: 20px; font-weight: 600;">Giỏ hàng của bạn trống.</p>');
+
+				$('.total_price').html(0);
+
+			} else {
+				let totalPrice = 0;
+				//totalPriceAll = 0;
+				$.each(cart, function (index, product) {
+					let priceFormat = 0, priceAfterDiscountFormat = 0;
+					if (product.price) {
+						let priceReplace = product.price.replaceAll(".", "");
+						priceFormat = parseInt(priceReplace);
+					} else {
+						priceFormat = 0;
+					}
+
+					if (product.priceafterdiscount) {
+						let priceReplace = product.priceafterdiscount.replaceAll(".", "");
+						priceAfterDiscountFormat = parseInt(priceReplace);
+					} else {
+						priceAfterDiscountFormat = 0;
+					}
+
+
+					if (product.discountpercentage != 0) {
+						totalPrice += priceAfterDiscountFormat * parseInt(product.quantity);
+						$cartItems.append('<div class="product-item" data-id="' + product.id + '" data-root="-1">' +
+							'<div class="product-item-img" data-field="img">' +
+							'<img src="' + product.image + "?s=3" + '">' +
+							'</div>' +
+							'<div class="product-info">' +
+							'<div class="product-info-top">' +
+							'<div class="product-item-info">' +
+							'<a class="product-item-title" data-field="name" href="' + product.href + '">' + product.name + '</a>' +
+							'<div class="attribute" data-field="attrname"><span class="btn btn-primary">' + product.code + '</span></div>' +
+							'<div data-field="delete"><a class="btn-delete remove-from-cart" data-id="' + product.id + '" ><i class="fa fa-times-circle"></i>Xóa</a></div>' +
+							'</div>' +
+							'<div class="price-number">' +
+							'<div class="product-item-price">' +
+							'<p class="price" data-field="price">' + product.priceafterdiscount + '</p>' +
+							'<p class="old-price" data-field="oldprice">' + product.price + '</p>' +
+							'</div>' +
+							'<div class="input-group spinner" data-price="' + priceFormat + '"  data-href="' + product.href + '" data-name="' + product.name + '" data-code="' + product.code + '" data-id="' + product.id + '" data-image="' + product.image + '"  data-field="quantity">' +
+							'<button class="btn sub-quantity" type="button">-</button>' +
+							'<input type="text" class="form-control" value="' + product.quantity + '">' +
+							'<button class="btn add-quantity" type="button">+</button>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'</div>'
+						);
+					} 
+					else {
+						totalPrice += priceFormat * parseInt(product.quantity);
+						$cartItems.append('<div class="product-item" data-id="' + product.id + '" data-root="-1">' +
+							'<div class="product-item-img" data-field="img">' +
+							'<img src="' + product.image + "?s=3" + '">' +
+							'</div>' +
+							'<div class="product-info">' +
+							'<div class="product-info-top">' +
+							'<div class="product-item-info">' +
+							'<a class="product-item-title" data-field="name" href="' + product.href + '">' + product.name + '</a>' +
+							'<div class="attribute" data-field="attrname"><span class="btn btn-primary">' + product.code + '</span></div>' +
+							'<div data-field="delete"><a class="btn-delete remove-from-cart" data-id="' + product.id + '" ><i class="fa fa-times-circle"></i>Xóa</a></div>' +
+							'</div>' +
+							'<div class="price-number">' +
+							'<div class="product-item-price">' +
+							'<p class="price" data-field="price">' + product.price + '</p>' +
+							'</div>' +
+							'<div class="input-group spinner" data-price="' + priceFormat + '"  data-href="' + product.href + '" data-name="' + product.name + '" data-code="' + product.code + '" data-id="' + product.id + '" data-image="' + product.image + '"  data-field="quantity">' +
+							'<button class="btn sub-quantity" type="button">-</button>' +
+							'<input type="text" class="form-control" value="' + product.quantity + '">' +
+							'<button class="btn add-quantity" type="button">+</button>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'</div>' +
+							'</div>'
+						);
+					}
+				});
+
+
+				// <div class="product-item-price">
+				// 	<p class="price" data-field="price">13,700,000</p>
+				// 	<p class="old-price" data-field="oldprice">16,900,000</p>
+				// </div>
+
+				// binding total price
+				let formattedPrice = new Intl.NumberFormat('vi-VN', {
+					style: 'currency',
+					currency: 'VND',
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}).format(totalPrice)
+
+				$('.total_price').html(formattedPrice);
+
+			}
+		}
+
+		function formatDateNow() {
+			const now = new Date();
+
+			// Get day, month, year, hours, and minutes
+			const day = String(now.getDate()).padStart(2, '0'); // Add leading zero if needed
+			const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+			const year = now.getFullYear();
+			const hours = String(now.getHours()).padStart(2, '0');
+			const minutes = String(now.getMinutes()).padStart(2, '0');
+
+			// Format date as dd-mm-yyyy HH:MM
+			const formattedDate = `${day}-${month}-${year} ${hours}:${minutes}`;
+
+			return formattedDate;
+		}
+
+
+		function OrderCardSuccess(checkcart) {
+
+			// <div class="box-body">
+			//              <h3 class="box-success-title"><i class="fas fa-check-circle"></i><span>Đặt hàng thành công</span></h3>
+			//              <p class="text-center">Cám ơn <strong>"fds"</strong> đã đặt hàng với Chúng tôi.</p>
+			//              <p class="text-center">Vui lòng kiểm tra lại thông tin đơn đặt hàng của bạn</p>
+			//              <div class="box-cart-info">
+			//                  <p class="info-title">Đơn hàng (Đặt lúc 20-09-2024 02:34)</p>
+			//                  <ul>
+			//                      <li><span>Người nhận hàng:</span><span>fds</span></li>
+			//                      <li><span>Điện thoại:</span><span>fsdf</span></li>
+			//                      <li><span>Yêu cầu khác:</span><span>ss</span></li>
+			//                  </ul>
+			//              </div>
+			//              <div class="form-group">
+			//                  <a class="btn btn-primary btn-order" title="Hãy tiếp tục mua hàng" href="/">Hãy tiếp tục mua hàng →</a>
+			//              </div>
+			//          </div>
+
+			$('.body_content').remove();
+			var $body_content = $('.section_body')
+
+			$body_content.append(
+				'<div class="box-body">' +
+				'<h3 class="box-success-title"><i class="fas fa-check-circle"></i><span>Đặt hàng thành công</span></h3>' +
+				'<p class="text-center">Cám ơn <strong>' + checkcart.name + '</strong> đã đặt hàng với Chúng tôi.</p>' +
+				'<p class="text-center">Vui lòng kiểm tra lại thông tin đơn đặt hàng của bạn</p>' +
+				'<div class="box-cart-info">' +
+				'<p class="info-title">Đơn hàng (Đặt lúc <span>' + formatDateNow() + '</span>)</p>' +
+				'<ul>' +
+				'<li><span>Người nhận hàng:</span><span>' + checkcart.name + '</span></li>' +
+				'<li><span>Điện thoại:</span><span>' + checkcart.phone + '</span></li>' +
+				'<li><span>Yêu cầu khác:</span><span>' + checkcart.note + '</span></li>' +
+				'</ul>' +
+				'</div>' +
+				'<div class="form-group">' +
+				' <a class="btn btn-primary btn-order" title="Hãy tiếp tục mua hàng" href="/">Hãy tiếp tục mua hàng →</a>' +
+				'</div>' +
+				'</div>'
+			);
+		}
+
+
+		function saveCart(cart) {
+			localStorage.setItem('cart', JSON.stringify(cart));
+		}
+
+		// // Hàm lấy giỏ hàng từ localStorage
+		// function loadCart() {
+		// 	var cart = localStorage.getItem('cart');
+		// 	return cart ? JSON.parse(cart) : [];
+		// }
+
+		// Hàm thêm sản phẩm vào giỏ hàng
+		function addToCart(product) {
+			var cart = loadCart();
+
+			// Kiểm tra xem sản phẩm đã có trong giỏ hàng hay chưa
+			var existingProduct = cart.find(item => item.id === product.id);
+			if (existingProduct) {
+				// Nếu sản phẩm đã có, tăng số lượng
+				existingProduct.quantity += 1;
+			} else {
+				// Nếu chưa có, thêm mới sản phẩm vào giỏ
+				product.quantity = 1;
+				cart.push(product);
+			}
+
+			// Lưu giỏ hàng
+			saveCart(cart);
+			//alert(product.name + ' has been added to your cart!');
+		}
+
+
+		function subProductInCart(product) {
+			var cart = loadCart();
+
+			// Kiểm tra xem sản phẩm đã có trong giỏ hàng hay chưa
+			var existingProduct = cart.find(item => item.id === product.id);
+			if (existingProduct) {
+				// Nếu sản phẩm đã có, giam số lượng
+				existingProduct.quantity -= 1;
+				if (existingProduct.quantity > 0) {
+					saveCart(cart);
+				} else {
+
+					// Loại bỏ sản phẩm khỏi giỏ hàng
+					var updatedCart = cart.filter(function (item) {
+						return item.id !== product.id;
+					});
+
+					// Lưu giỏ hàng mới
+					saveCart(updatedCart);
+
+					// Cập nhật lại giỏ hàng
+					displayCart();
+				}
+
+				var cartReload = loadCart();
+				let lengthCart = cartReload.length;
+				$('.quantity-product-cart').html(lengthCart);
+
+			}
+
+		}
+
+		function removeAllProductLocalStorage() {
+			localStorage.clear();
+		}
+
+		// Gọi hàm hiển thị giỏ hàng khi trang được tải
+		$(document).ready(function () {
+			displayCart();
+
+			// Xử lý sự kiện xóa sản phẩm khỏi giỏ hàng
+			$('#cart-items').on('click', '.remove-from-cart', function () {
+				var productId = $(this).data('id');
+				var cart = loadCart();
+
+				// Loại bỏ sản phẩm khỏi giỏ hàng
+				var updatedCart = cart.filter(function (item) {
+					return item.id !== productId;
+				});
+
+				// Lưu giỏ hàng mới
+				saveCart(updatedCart);
+
+				// Cập nhật lại giỏ hàng
+				displayCart();
+
+				var cartReload = loadCart();
+				let lengthCart = cartReload.length;
+				$('.quantity-product-cart').html(lengthCart);
+			});
+
+
+			$('#cart-items').on('click', '.add-quantity', function () {
+				var product = {
+					id: $(this).parent().data('id'),
+					name: $(this).parent().data('name'),
+					price: $(this).parent().data('price'),
+					image: $(this).parent().data('image'),
+					href: $(this).parent().data('href'),
+					code: $(this).parent().data('code'),
+					discountpercentage: $(this).parent().data('discountpercentage'),
+					discountprice: $(this).parent().data('discountprice'),
+					priceafterdiscount: $(this).parent().data('priceafterdiscount'),
+					// xxxxxxxxx
+				};
+
+				// Thêm sản phẩm vào giỏ hàng
+				addToCart(product);
+				displayCart();
+			});
+
+			$('#cart-items').on('click', '.sub-quantity', function () {
+				var product = {
+					id: $(this).parent().data('id'),
+					name: $(this).parent().data('name'),
+					price: $(this).parent().data('price'),
+					image: $(this).parent().data('image'),
+					href: $(this).parent().data('href'),
+					code: $(this).parent().data('code'),
+					discountpercentage: $(this).parent().data('discountpercentage'),
+					discountprice: $(this).parent().data('discountprice'),
+					priceafterdiscount: $(this).parent().data('priceafterdiscount'),
+				};
+
+				// Thêm sản phẩm vào giỏ hàng
+				subProductInCart(product);
+				displayCart();
+			});
+
+			$('.btn-order').click(function () {
+				let name = $('.ReceiveName').val();
+				let phone = $('.ReceivePhone').val();
+				let note = $('.ReceiveNote').val();
+
+				if (name == '') {
+					showAlertInfoFocus('Trường người nhận là bắt buộc', 8);
+					return;
+				}
+				if (phone == '') {
+					showAlertInfoFocus('Trường số điện thoại là bắt buộc', 8);
+					return;
+				}
+
+				var cart = loadCart();
+
+				var product = {
+					CartItems: cart,
+					name: name,
+					phone: phone,
+					note: note,
+				};
+				var request = {
+					"request": JSON.stringify(product)
+				}
+
+				console.log(product);
+				console.log(JSON.stringify(product));
+				$.ajax({
+					type: "POST",
+					contentType: "application/json",
+					url: "/Cart/Checkout",
+					data: JSON.stringify(product),
+					contentType: 'application/json',
+					dataType: 'json',
+					//cache: false,
+					//timeout: 600000,
+					success: function (data) {
+						console.log("success >> " + data);
+						if (data.status == "success") {
+							removeAllProductLocalStorage();
+							OrderCardSuccess(data.res);
+						} else {
+							showAlertInfoFocus('Đặt đơn hàng có vấn đề xảy ra', 8);
+						}
+					},
+					error: function (err) {
+						console.log("error >> " + err);
+					}
+				});
+
+			});
+		});
+	</script>
+}

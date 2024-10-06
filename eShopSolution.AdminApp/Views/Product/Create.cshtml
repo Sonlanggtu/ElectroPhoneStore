@@ -6,21 +6,7 @@
 
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts{
-    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#txt_details'), {
-                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
-            })
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(err => {
-                console.error(err.stack);
-            });
-    </script>
-}
+
 
 <style>
     .validation-summary-valid span {
@@ -49,6 +35,11 @@
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
+                     <div class="form-group">
+                        <label asp-for="Alias" class="control-label"></label>
+                        <input asp-for="Alias" class="form-control" />
+                        <span asp-validation-for="Alias" class="text-danger"></span>
+                    </div>
                     <div class="form-group">
                         <label asp-for="CategoryId" class="control-label"></label>
                         <select asp-for="CategoryId" class="form-control form-control-md">
@@ -59,14 +50,44 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label asp-for="Purpose" class="control-label"></label>
+                        <select asp-for="Purpose" class="form-control form-control-md">
+                            <option value="1">Laptop Gaming</option>
+                            <option value="2"> Đồ Họa - Kỹ Thuật</option>
+                            <option value="3">Học Tập - Văn Phòng</option>
+                            <option value="4">Cao Cấp - Sang Trọng</option>
+                            <option selected value="5">Không thuộc loại nào</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OrderFeatured" class="control-label"></label>
+                        <select asp-for="OrderFeatured" class="form-control form-control-md">
+                            <option value="1">Hàng mới - nổi bật</option>
+                            <option value="2"> Khá nổi bật</option>
+                            <option value="3">bình thường</option>
+                            <option value="4">ít nổi bậi</option>
+                            <option selected value="5">rất ít nổi bật</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="Price" class="control-label"></label>
                         <input asp-for="Price" type="number" class="form-control" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="DiscountPercentage" class="control-label"></label>
+                        <input asp-for="DiscountPercentage" type="number" class="form-control" />
+                        <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="Stock" class="control-label"></label>
                         <input asp-for="Stock" type="number" class="form-control" />
                         <span asp-validation-for="Stock" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ShortDescription" class="control-label"></label>
+                        <textarea id="txt_short_description" asp-for="ShortDescription" rows="5" class="form-control"></textarea>
+                        <span asp-validation-for="ShortDescription" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
@@ -85,9 +106,10 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ProductImage" class="control-label"></label>
-                        <input asp-for="ProductImage" type="file" class="form-control" />
+                        <input asp-for="ProductImage" type="file" multiple class="form-control" />
                         <span asp-validation-for="ProductImage" class="text-danger"></span>
                     </div>
+                    
                     <div class="form-group">
                         <input type="submit" value="Tạo mới" class="btn btn-primary" />
                     </div>
@@ -96,3 +118,77 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script>
+    <script>
+         ClassicEditor
+            .create(document.querySelector('#txt_short_description'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                editor.ui.view.editable.element.style.height = '300px';
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+
+         ClassicEditor
+            .create(document.querySelector('#txt_details'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                editor.ui.view.editable.element.style.height = '200px';
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+
+             ClassicEditor
+            .create(document.querySelector('#txt_details_2'), {
+                // toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                editor.ui.view.editable.element.style.height = '500px';
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+
+            
+        $(document).ready(function () {
+            $('#Name').on('input', function () {
+                var productcategory_name = $('#Name').val();
+                $('#Alias').val(convertToSlug(productcategory_name));
+                //console.log($(this).val()); // Logs the current value of the input field as the user types
+            });
+        });
+
+        function removeDiacritics(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        };
+
+        function convertToSlug(str) {
+            // Bước 1: Loại bỏ dấu
+            str = removeDiacritics(str);
+
+            // Bước 2: Chuyển về chữ thường
+            str = str.toLowerCase();
+
+            // Bước 3: Thay thế các ký tự không phải là chữ cái hoặc số bằng dấu "-"
+            str = str.replace(/[^a-z0-9\s-]/g, '');
+
+            // Bước 4: Thay thế các khoảng trắng hoặc dấu "-" liên tiếp thành một dấu "-"
+            str = str.replace(/\s+/g, '-').replace(/-+/g, '-');
+
+            // Bước 5: Xóa các dấu "-" ở đầu và cuối chuỗi
+            str = str.replace(/^-+|-+$/g, '');
+
+            return str;
+        };
+    </script>
+}

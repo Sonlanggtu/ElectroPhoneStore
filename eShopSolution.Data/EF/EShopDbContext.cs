@@ -41,6 +41,8 @@ namespace eShopSolution.Data.EF
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
 
             // những entity có HasKey là do lúc migrate báo lỗi yêu cầu thêm key
+
+            modelBuilder.Entity<PostTag>().ToTable("PostTags").HasKey(x => new {x.PostID, x.TagID });
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
 
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
@@ -64,5 +66,11 @@ namespace eShopSolution.Data.EF
         public DbSet<Order> Orders { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCategory> PostCategories { get; set; }
+        public DbSet<PostTag> PostTags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+
     }
 }

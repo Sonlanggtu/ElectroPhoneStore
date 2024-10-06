@@ -162,7 +162,7 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "45c68a23-cc5e-48ca-99d0-a42c4d863a21",
+                            ConcurrencyStamp = "1352b805-c977-4629-9375-fcf3c0911cb9",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -234,16 +234,16 @@ namespace eShopSolution.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            Address = "123 An Dương Vương P.8 Q.5",
-                            ConcurrencyStamp = "c3bcf8b1-e264-4485-adf0-363f21f1b31c",
+                            Address = "ABCDXYZ",
+                            ConcurrencyStamp = "d0b3e4e1-ad2b-4ca9-b648-75b855518532",
                             Email = "hytranluan@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            Name = "Luan Hy",
+                            Name = "Luan Hy Dev",
                             NormalizedEmail = "HYTRANLUAN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKVBBlMrmMlMt0Yg0uyii07dHL4bgLL66e6yft/OspKL2nUOiOMCJSf9nGCh3Op5PQ==",
-                            PhoneNumber = "0765006381",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPVCxSt+aYbhuskaXtThSOLnJYDFH+7t+zZiSf6MJhsP4V5B4per3NRR31mFw2vGvw==",
+                            PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -260,10 +260,24 @@ namespace eShopSolution.Data.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Alias")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("idParent")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isEnable")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -273,32 +287,44 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "iPhone"
+                            Name = "iPhone",
+                            idParent = 0,
+                            isEnable = false
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Samsung"
+                            Name = "Samsung",
+                            idParent = 0,
+                            isEnable = false
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Oppo"
+                            Name = "Oppo",
+                            idParent = 0,
+                            isEnable = false
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Vivo"
+                            Name = "Vivo",
+                            idParent = 0,
+                            isEnable = false
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Xiaomi"
+                            Name = "Xiaomi",
+                            idParent = 0,
+                            isEnable = false
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Nokia"
+                            Name = "Nokia",
+                            idParent = 0,
+                            isEnable = false
                         });
                 });
 
@@ -369,12 +395,13 @@ namespace eShopSolution.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CouponId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -417,14 +444,142 @@ namespace eShopSolution.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("NameProduct")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalItem")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.Post", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("ntext");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("ntext");
+
+                    b.Property<bool?>("HomeFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HotFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int>("IsDisable")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.PostCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("HomeFlag")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsDisable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("ParentID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PostCategories");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.PostTag", b =>
+                {
+                    b.Property<int>("PostID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TagID")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("PostID", "TagID");
+
+                    b.HasIndex("TagID");
+
+                    b.ToTable("PostTags");
                 });
 
             modelBuilder.Entity("eShopSolution.Data.Entities.Product", b =>
@@ -435,6 +590,10 @@ namespace eShopSolution.Data.Migrations
                         .HasAnnotation("SqlServer:IdentityIncrement", 1)
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Alias")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -450,18 +609,32 @@ namespace eShopSolution.Data.Migrations
                     b.Property<string>("Details")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDnable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("OrderFeatured")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasMaxLength(100000000)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductImage")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("ntext");
+
+                    b.Property<int>("Purpose")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Stock")
                         .ValueGeneratedOnAdd()
@@ -469,9 +642,15 @@ namespace eShopSolution.Data.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<string>("Tags")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Thumbnail")
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int?>("ViewCount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -484,66 +663,90 @@ namespace eShopSolution.Data.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 336, DateTimeKind.Local).AddTicks(5100),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 611, DateTimeKind.Local).AddTicks(6345),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "iPhone 12 Pro",
+                            OrderFeatured = 5,
                             Price = 28890000m,
+                            Purpose = 5,
                             Stock = 5
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 2,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 337, DateTimeKind.Local).AddTicks(2261),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 612, DateTimeKind.Local).AddTicks(2614),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "Samsung Galaxy S21+",
+                            OrderFeatured = 5,
                             Price = 20990000m,
+                            Purpose = 5,
                             Stock = 5
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 3,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 337, DateTimeKind.Local).AddTicks(2288),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 612, DateTimeKind.Local).AddTicks(2650),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "Oppo Reno 5",
+                            OrderFeatured = 5,
                             Price = 8290000m,
+                            Purpose = 5,
                             Stock = 5
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 4,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 337, DateTimeKind.Local).AddTicks(2291),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 612, DateTimeKind.Local).AddTicks(2652),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "Vivo V21 5G",
+                            OrderFeatured = 5,
                             Price = 9990000m,
+                            Purpose = 5,
                             Stock = 5
                         },
                         new
                         {
                             Id = 5,
                             CategoryId = 5,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 337, DateTimeKind.Local).AddTicks(2293),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 612, DateTimeKind.Local).AddTicks(2653),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "Xiaomi Redmi Note 10",
+                            OrderFeatured = 5,
                             Price = 5090000m,
+                            Purpose = 5,
                             Stock = 5
                         },
                         new
                         {
                             Id = 6,
                             CategoryId = 6,
-                            DateCreated = new DateTime(2021, 6, 15, 22, 22, 25, 337, DateTimeKind.Local).AddTicks(2295),
+                            DateCreated = new DateTime(2024, 10, 4, 20, 18, 33, 612, DateTimeKind.Local).AddTicks(2654),
                             Description = "",
                             Details = "",
+                            DiscountPercentage = 0m,
+                            IsDnable = false,
                             Name = "Nokia 5.4",
+                            OrderFeatured = 5,
                             Price = 3290000m,
+                            Purpose = 5,
                             Stock = 5
                         });
                 });
@@ -571,7 +774,7 @@ namespace eShopSolution.Data.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -581,6 +784,27 @@ namespace eShopSolution.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.Tag", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("eShopSolution.Data.Entities.Order", b =>
@@ -617,6 +841,36 @@ namespace eShopSolution.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("eShopSolution.Data.Entities.Post", b =>
+                {
+                    b.HasOne("eShopSolution.Data.Entities.PostCategory", "PostCategory")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PostCategory");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.PostTag", b =>
+                {
+                    b.HasOne("eShopSolution.Data.Entities.Post", "Post")
+                        .WithMany("PostTags")
+                        .HasForeignKey("PostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eShopSolution.Data.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("eShopSolution.Data.Entities.Product", b =>
                 {
                     b.HasOne("eShopSolution.Data.Entities.Category", "Category")
@@ -638,7 +892,9 @@ namespace eShopSolution.Data.Migrations
 
                     b.HasOne("eShopSolution.Data.Entities.AppUser", "AppUser")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("AppUser");
 
@@ -665,6 +921,16 @@ namespace eShopSolution.Data.Migrations
             modelBuilder.Entity("eShopSolution.Data.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.Post", b =>
+                {
+                    b.Navigation("PostTags");
+                });
+
+            modelBuilder.Entity("eShopSolution.Data.Entities.PostCategory", b =>
+                {
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("eShopSolution.Data.Entities.Product", b =>

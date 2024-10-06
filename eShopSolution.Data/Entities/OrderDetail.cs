@@ -12,7 +12,10 @@ namespace eShopSolution.Data.Entities
 
         public int Quantity { set; get; }
 
-        public Order Order { get; set; }
+		public decimal Price { set; get; }
+		public string NameProduct { set; get; }
+        public decimal TotalItem { set; get; }
+		public Order Order { get; set; }
 
         public Product Product { get; set; }
         

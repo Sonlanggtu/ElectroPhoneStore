@@ -25,11 +25,13 @@ namespace eShopSolution.Data.Configurations
 
             builder.Property(x => x.Description).IsRequired().HasMaxLength(2000);
 
-            builder.Property(x => x.Details).HasColumnType("nvarchar(max)");
+			//builder.Property(x => x.ShortDescription).IsRequired().HasMaxLength(2000);
 
-            builder.Property(x => x.Thumbnail).HasMaxLength(300).IsRequired(false);
+			builder.Property(x => x.Details).HasColumnType("nvarchar(max)");
 
-            builder.Property(x => x.ProductImage).HasMaxLength(300).IsRequired(false);
+            builder.Property(x => x.Thumbnail).HasMaxLength(3000).IsRequired(false);
+
+            builder.Property(x => x.ProductImage).HasColumnType("ntext").IsRequired(false);
 
             builder.HasOne(x => x.Category).WithMany(x => x.Products).HasForeignKey(x => x.CategoryId);
         }

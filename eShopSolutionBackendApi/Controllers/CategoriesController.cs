@@ -1,8 +1,12 @@
 ﻿using eShopSolution.Application.Catalog.Categories;
+using eShopSolution.Data.Entities;
 using eShopSolution.ViewModels.Catalog.Categories;
 using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eShopSolutionBackendApi.Controllers
@@ -19,7 +23,31 @@ namespace eShopSolutionBackendApi.Controllers
             _categoryService = categoryService;
         }
 
-        [HttpGet]
+		
+
+		[HttpGet("loadCategoryTrees")]
+		public async Task<IActionResult> LoadCategoryTrees()
+		{
+			List<CategoryTreeNode> categoryTrees = await _categoryService.LoadCategoryTrees();
+			return Ok(categoryTrees);
+		}
+
+		[HttpGet("loadCategoryTreeById/{categoryId}")]
+		public async Task<IActionResult> LoadCategoryTreeById(int categoryId)
+		{
+			CategoryTreeNodeParent categoryTree = await _categoryService.LoadCategoryTreeById(categoryId);
+			return Ok(categoryTree);
+		}
+
+		[HttpGet("loadChildCategoryById/{categoryId}")]
+		public async Task<IActionResult> LoadChildCategoryById(int categoryId)
+		{
+			var categories = await _categoryService.LoadChildCategoryById(categoryId);
+			return Ok(categories);
+		}
+		
+
+		[HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var categories = await _categoryService.GetAll();
@@ -42,7 +70,7 @@ namespace eShopSolutionBackendApi.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create([FromBody] CategoryCreateRequest request)
+        public async Task<IActionResult> Create([FromForm] CategoryCreateRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -60,7 +88,7 @@ namespace eShopSolutionBackendApi.Controllers
         // HttpPut: update toàn phần
         [HttpPut("updateCategory")]
         [Authorize]
-        public async Task<IActionResult> Update([FromBody] CategoryUpdateRequest request)
+        public async Task<IActionResult> Update([FromForm] CategoryUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {

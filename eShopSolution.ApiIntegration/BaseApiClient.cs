@@ -37,7 +37,7 @@ namespace eShopSolution.ApiIntegration
 
             var client = _httpClientFactory.CreateClient();
 
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
 
             //Represents authentication information
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
@@ -56,18 +56,26 @@ namespace eShopSolution.ApiIntegration
 
         public async Task<List<T>> GetListAsync<T>(string url, bool requiredLogin = false)
         {
-            var sessions = _httpContextAccessor
+            Console.WriteLine("Start Func GetListAsync >>>>");
+			var sessions = _httpContextAccessor
                .HttpContext
                .Session
                .GetString(SystemConstants.AppSettings.Token);
 
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+			Console.WriteLine($"sessions >>>> {sessions}");
+			var client = _httpClientFactory.CreateClient();
+
+			Console.WriteLine($"create  client");
+			Console.WriteLine($"uri >>>> {_configuration[SystemConstants.AppSettings.BaseAddressBackend]}");
+
+			client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.GetAsync(url);
-            var body = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+			
+			var body = await response.Content.ReadAsStringAsync();
+			Console.WriteLine($"response >>>> {body}");
+			if (response.IsSuccessStatusCode)
             {
                 var data = (List<T>)JsonConvert.DeserializeObject(body, typeof(List<T>));
                 return data;
@@ -85,7 +93,7 @@ namespace eShopSolution.ApiIntegration
                .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var response = await client.DeleteAsync(url);

@@ -1,0 +1,52 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@{
+    var categoryTrees = (List<eShopSolution.ViewModels.Utilities.CategoryTreeNode>)ViewBag.CategoryTrees;
+
+
+}
+
+
+<ul class="navbar-nav">
+    @{
+
+        void RenderHtmlTree(List<eShopSolution.ViewModels.Utilities.CategoryTreeNode> categoryTrees)
+        {
+            @if (categoryTrees != null && categoryTrees.Any())
+            {
+                <ul class="dropdown-menu">
+                    @foreach (var categoryItem in categoryTrees)
+                    {
+                        string hrefcategory = $"/danh-muc-san-pham/{categoryItem.Alias}";
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name">@categoryItem.Name </a>
+                            @if (categoryItem.Children != null && categoryItem.Children.Any())
+                            {
+                                RenderHtmlTree(categoryItem.Children);
+                            }
+                        </li>
+
+
+                    }
+                </ul>
+            }
+        }
+    }
+
+    @if (categoryTrees != null && categoryTrees.Any())
+    {
+        foreach (var categoryItem in categoryTrees)
+        {
+            string hrefcategory = $"/danh-muc-san-pham/{categoryItem.Alias}";
+            <li class="nav-item dropdown">
+                <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name"><img class="icon-img lazyload" alt="@categoryItem.Name" data-src="@($"{Configuration["BaseAddressBackend"]}{categoryItem.Image}")" /> <span>@categoryItem.Name</span></a>
+                @if (categoryItem.Children != null && categoryItem.Children.Any())
+                {
+                    RenderHtmlTree(categoryItem.Children);
+                }
+            </li>
+        }
+    }
+
+
+</ul>

@@ -21,6 +21,13 @@ namespace eShopSolutionBackendApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+
+					//var config = new ConfigurationBuilder()
+					//  .AddJsonFile("appsettings.json", optional: false)
+					//  .Build();
+
+					//string hostUrl = config["HostUrl"];
+					//webBuilder.UseUrls(hostUrl);
+				});
     }
 }

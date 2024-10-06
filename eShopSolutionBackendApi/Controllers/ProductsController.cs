@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace eShopSolutionBackendApi.Controllers
 {
-    //api/productsDD
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

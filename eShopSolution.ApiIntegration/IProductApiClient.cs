@@ -22,9 +22,9 @@ namespace eShopSolution.ApiIntegration
 
         Task<ProductViewModel> GetById(int id);
 
-        Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take);
+        Task<List<ProductViewModel>> GetFeaturedProducts(int take);
 
-        Task<List<ProductViewModel>> GetLatestProducts(string languageId, int take);
+        Task<List<ProductViewModel>> GetLatestProducts(int take);
 
         Task<string> AddReview(ProductDetailViewModel model);
     }

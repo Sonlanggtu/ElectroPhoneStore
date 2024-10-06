@@ -2,9 +2,9 @@
     color: white;
     text-decoration: none;
 }
-a:visited {
+/*a:visited {
     color: white
-}
+}*/
 a:hover {
 
 }
@@ -13,3 +13,10 @@ a:active {
 }
 
 
+.change_color_tag_link{
+    color: white;
+}
+
+.ck-editor__editable {
+    min-height: 500px;
+}

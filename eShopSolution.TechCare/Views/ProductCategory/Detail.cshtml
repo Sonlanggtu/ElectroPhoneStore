@@ -1,0 +1,342 @@
+﻿@using static eShopSolution.Utilities.Constants.SystemConstants
+@model eShopSolution.TechCare.Models.ProductCategoryControllerViewModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+	Layout = "_Layout";
+	ViewData["Title"] = "Product Category Page";
+}
+
+<section class="breadcrumbs">
+	<div class="container">
+		<ol class="breadcrumb"
+			itemscope
+			itemtype="https://schema.org/BreadcrumbList">
+			<li class="breadcrumb-item"
+				itemprop="itemListElement"
+				itemscope
+				itemtype="https://schema.org/ListItem">
+				<a title="Trang chủ"
+				   itemprop="item"
+				   itemtype="https://schema.org/Thing"
+				   href="/">
+					<span itemprop="name"><span data-lang="bc_home">Trang chủ</span></span>
+				</a>
+				<meta itemprop="position" content="1" />
+			</li>
+
+
+			@if (Model.ListCategoryTreeById != null && Model.ListCategoryTreeById.Any())
+			{
+				foreach (var categoryTree in Model.ListCategoryTreeById.AsEnumerable().Reverse())
+				{
+					<li class="breadcrumb-item"
+						itemprop="itemListElement"
+						itemscope
+						itemtype="https://schema.org/ListItem">
+						<a title="@categoryTree.Name"
+						   itemprop="item"
+						   itemtype="https://schema.org/Thing"
+						   href="@($"{Configuration["BaseAddress"]}/danh-muc-san-pham/{categoryTree.Alias}")"><span itemprop="name">@categoryTree.Name</span></a>
+						<meta itemprop="position" content="2" />
+					</li>
+				}
+			}
+		</ol>
+	</div>
+</section>
+
+<section class="wrap">
+	<div class="container">
+		<div class="section-category">
+			<div class="box box-category">
+				<nav class="category-list">
+					@if (Model.CateogoryChildHeaderSections.Any())
+					{
+						@foreach (var categoryHeader in Model.CateogoryChildHeaderSections)
+						{	
+							<a class="category-item" href="@categoryHeader.Alias" title="@categoryHeader.Name">
+								<span class="category-img"><img class=" lazyloaded" data-src="@($"{Configuration["BaseAddressBackend"]}/{categoryHeader.Image}")" alt="@categoryHeader.Name" width="64" height="64" src="@($"{Configuration["BaseAddressBackend"]}/{categoryHeader.Image}")"></span>
+								<span>@categoryHeader.Name</span>
+							</a>
+						}
+					}
+					
+				</nav>
+			</div>
+		</div>
+		<div class="box box-product">
+			<div class="box-header">
+				<h1 class="box-title">
+					@{
+						string categoryUrl = Model.ProductRequest.CategoryUrl;
+						int purpose = Model.ProductRequest.Purpose;
+						string conditionPriceTitle = Model.ProductRequest.ConditionPrice;
+
+						if (!string.IsNullOrEmpty(categoryUrl))
+						{
+							<b>@categoryUrl.Replace("-", " ")</b>
+							// @Model.ListCategoryTreeById[0].Name
+						}
+						else if (purpose == ProductConstants.LAPTOP_GAMING)
+						{
+							<b>Laptop Gaming</b>
+						}
+						else if (purpose == ProductConstants.LAPTOP_GRAPHICS)
+						{
+							<b>Laptop Đồ Họa</b>
+						}
+						else if (purpose == ProductConstants.LAPTOP_OFFFICE)
+						{
+							<b>Laptop Học Tập - Văn Phòng</b>
+						}
+						else if (purpose == ProductConstants.LAPTOP_LUXURY)
+						{
+							<b>Cao Cấp - Sang Trọng</b>
+						}
+
+						else if (conditionPriceTitle == "10tr-15tr")
+						{
+							<b>Laptop Từ 10 - 15 Triệu</b>
+						}
+						else if (conditionPriceTitle == "15tr-20tr")
+						{
+							<b>Laptop Từ 15 - 20 Triệu</b>
+						}
+						else if (conditionPriceTitle == "20tr-25tr")
+						{
+							<b>Laptop Từ 20 - 25 Triệu</b>
+						}
+						else if (conditionPriceTitle == ">25tr")
+						{
+							<b>Laptop Trên 25 Triệu</b>
+						}
+
+					}
+				</h1>
+
+				@{
+					string sortOption = Model.ProductRequest.SortOption;
+					string conditionPrice = Model.ProductRequest.ConditionPrice;
+					<div class="scroll-right" id="productfilter" data-id="7">
+						<div class="tag-filter-list" data-field="price">
+							@if (!string.IsNullOrEmpty(conditionPrice))
+							{
+								if (conditionPrice == "<10tr")
+								{
+									<button class="tag-filter-item active" title="Dưới 10 triệu" value="<10tr" onclick="sortProduct(this)">Dưới 10 triệu</button>
+									<button class="tag-filter-item" title="Từ 10 - 15 triệu" value="10tr-15tr" onclick="sortProduct(this)">10 - 15 triệu</button>
+									<button class="tag-filter-item" title="Từ 15 - 20 triệu" value="15tr-20tr" onclick="sortProduct(this)">15 - 20 triệu</button>
+									<button class="tag-filter-item" title="Từ 20 - 25 triệu" value="20tr-25tr" onclick="sortProduct(this)">20 - 25 triệu</button>
+									<button class="tag-filter-item" title="Trên 25 triệu" value=">25tr" onclick="sortProduct(this)">Trên 25 triệu</button>
+								}
+								else if (conditionPrice == "10tr-15tr")
+								{
+									<button class="tag-filter-item" title="Dưới 10 triệu" value="<10tr" onclick="sortProduct(this)">Dưới 10 triệu</button>
+									<button class="tag-filter-item active" title="Từ 10 - 15 triệu" value="10tr-15tr" onclick="sortProduct(this)">10 - 15 triệu</button>
+									<button class="tag-filter-item" title="Từ 15 - 20 triệu" value="15tr-20tr" onclick="sortProduct(this)">15 - 20 triệu</button>
+									<button class="tag-filter-item" title="Từ 20 - 25 triệu" value="20tr-25tr" onclick="sortProduct(this)">20 - 25 triệu</button>
+									<button class="tag-filter-item" title="Trên 25 triệu" value=">25tr">Trên 25 triệu</button>
+								}
+								else if (conditionPrice == "15tr-20tr")
+								{
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Dưới 10 triệu" value="<10tr">Dưới 10 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 10 - 15 triệu" value="10tr-15tr">10 - 15 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item active" title="Từ 15 - 20 triệu" value="15tr-20tr">15 - 20 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 20 - 25 triệu" value="20tr-25tr">20 - 25 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Trên 25 triệu" value=">25tr">Trên 25 triệu</button>
+								}
+								else if (conditionPrice == "20tr-25tr")
+								{
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Dưới 10 triệu" value="<10tr">Dưới 10 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 10 - 15 triệu" value="10tr-15tr">10 - 15 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 15 - 20 triệu" value="15tr-20tr">15 - 20 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item active" title="Từ 20 - 25 triệu" value="20tr-25tr">20 - 25 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Trên 25 triệu" value=">25tr">Trên 25 triệu</button>
+								}
+								else if (conditionPrice == ">25tr")
+								{
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Dưới 10 triệu" value="<10tr">Dưới 10 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 10 - 15 triệu" value="10tr-15tr">10 - 15 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 15 - 20 triệu" value="15tr-20tr">15 - 20 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 20 - 25 triệu" value="20tr-25tr">20 - 25 triệu</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item active" title="Trên 25 triệu" value=">25tr">Trên 25 triệu</button>
+								}
+							}
+							else
+							{
+								<button onclick="sortProduct(this)" class="tag-filter-item" title="Dưới 10 triệu" value="<10tr">Dưới 10 triệu</button>
+								<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 10 - 15 triệu" value="10tr-15tr">10 - 15 triệu</button>
+								<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 15 - 20 triệu" value="15tr-20tr">15 - 20 triệu</button>
+								<button onclick="sortProduct(this)" class="tag-filter-item" title="Từ 20 - 25 triệu" value="20tr-25tr">20 - 25 triệu</button>
+								<button onclick="sortProduct(this)" class="tag-filter-item" title="Trên 25 triệu" value=">25tr">Trên 25 triệu</button>
+							}
+						</div>
+
+						<div class="tag-filter-list" data-field="type">
+							<span class="label">Sắp xếp theo: </span>
+							@if (!string.IsNullOrEmpty(sortOption))
+							{
+								if (sortOption == "price_low_to_hight")
+								{
+									<button onclick="sortProduct(this)" class="tag-filter-item active" value="price_low_to_hight" title="Giá thấp đến cao"><i class="far fa-sort-amount-up"></i>Giá thấp đến cao</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item" value="price_hight_to_low" title="Giá cao đến thấp"><i class="far fa-sort-amount-down"></i>Giá cao đến thấp</button>
+								}
+								else if (sortOption == "price_hight_to_low")
+								{
+									<button onclick="sortProduct(this)" class="tag-filter-item" value="price_low_to_hight" title="Giá thấp đến cao"><i class="far fa-sort-amount-up"></i>Giá thấp đến cao</button>
+									<button onclick="sortProduct(this)" class="tag-filter-item active" value="price_hight_to_low" title="Giá cao đến thấp"><i class="far fa-sort-amount-down"></i>Giá cao đến thấp</button>
+								}
+							}
+							else
+							{
+								@* <button class="tag-filter-item" data-id="3" title="Nổi bật"><i class="far fa-compass"></i>Nổi bật</button> *@
+								@* <button class="tag-filter-item" data-id="1" title="Giảm giá"><i class="far fa-percentage"></i>Giảm giá</button> *@
+								<button onclick="sortProduct(this)" class="tag-filter-item" value="price_low_to_hight" title="Giá thấp đến cao"><i class="far fa-sort-amount-up"></i>Giá thấp đến cao</button>
+								<button onclick="sortProduct(this)" class="tag-filter-item" value="price_hight_to_low" title="Giá cao đến thấp"><i class="far fa-sort-amount-down"></i>Giá cao đến thấp</button>
+							}
+						</div>
+					</div>
+				}
+
+			</div>
+			<div class="box-body">
+				<div class="product-list">
+
+					@if (Model.RelationProducts != null && Model.RelationProducts.Items != null && Model.RelationProducts.Items.Any())
+					{
+						@foreach (var product in Model.RelationProducts.Items)
+						{
+							<div class="col-product">
+								<div class="product-item">
+									<a class="product-item-img" href="@($"{Configuration["BaseAddress"]}/san-pham/{product.Alias}/{product.Id}")" title="@product.Name">
+										<img alt="@product.Name" class="lazyload" data-src="@($"{Configuration["BaseAddressBackend"]}{product.ThumbnailImage}?s=3")" />
+									</a>
+									<div class="product-body">
+										<h3 class="product-item-title"><a href="@($"{Configuration["BaseAddress"]}/san-pham/{product.Alias}/{product.Id}")" title="@product.Name">@product.Name</a></h3>
+
+										@if (product.DiscountPercentage != 0)
+										{
+											<div class="product-item-price">
+												<p class="price">@product.PriceAfterDiscount.ToString("N0") đ<span class="discount">-@Convert.ToUInt32(product.DiscountPercentage)%</span></p>
+												<p class="old-price"><span>@product.Price.ToString("N0") đ</span></p>
+											</div>
+										}
+										else
+										{
+											<div class="product-item-price">
+												<div class="product-item-price">
+													<p class="price">@product.Price.ToString("N0") đ</p>
+												</div>
+											</div>
+										}
+
+
+										<div class="product-item-bottom">
+											<div class="product-item-bottom-spec">
+												@{
+													@if (product.LaptopInfo != null)
+													{
+														<span><i class="icon icon-cpu"></i>@product.LaptopInfo.CPU</span>
+														<span><i class="icon icon-ram"></i>@product.LaptopInfo.RAM</span>
+														<span><i class="icon icon-ssd"></i>@product.LaptopInfo.Disk</span>
+														<span><i class="icon icon-gpu"></i>@product.LaptopInfo.GPU</span>
+														<span><i class="icon icon-screen"></i>@product.LaptopInfo.Display</span>
+													}
+												}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+					}
+				</div>
+				@*truyền Model vào hàm InvokeAsync của class PagerViewComponent để phân trang *@
+				<div>
+
+					@await Component.InvokeAsync("Pager", Model.RelationProducts)
+
+				</div>
+
+				@* <nav class="pagination-list">
+					<ul class="pagination">
+						<li class="page-item previous"><a class="page-link" href="https://techcare.net.vn/laptop-cu-re/?p=1">➔</a></li>
+						<li class="page-item"><a class="page-link" href="https://techcare.net.vn/laptop-cu-re/?p=1">1</a></li>
+						<li class="page-item active"><span class="page-link">2</span></li>
+						<li class="page-item"><a class="page-link" href="https://techcare.net.vn/laptop-cu-re/?p=3">3</a></li>
+						<li class="page-item next"><a class="page-link" href="https://techcare.net.vn/laptop-cu-re/?p=3">➔</a></li>
+					</ul>
+				</nav> *@
+			</div>
+		</div>
+	</div>
+</section>
+
+@section Scripts {
+	<script>
+		function updateQueryParamURL(key, value, url) {
+			// Nếu URL không được cung cấp, sử dụng URL hiện tại
+			if (!url) url = window.location.href;
+
+			// Tạo đối tượng URL
+			var urlParts = url.split('?'); // Tách URL thành phần trước và sau dấu '?'
+
+			if (urlParts.length >= 2) {
+				// Lấy các tham số query
+				var params = urlParts[1].split('&');
+				var found = false;
+
+				// Kiểm tra từng tham số và thay thế giá trị nếu tìm thấy key
+				for (var i = 0; i < params.length; i++) {
+					var param = params[i].split('=');
+					if (param[0] === key) {
+						params[i] = key + '=' + value;
+						found = true;
+						break;
+					}
+				}
+
+				// Nếu không tìm thấy key, thêm tham số mới vào
+				if (!found) {
+					params.push(key + '=' + value);
+				}
+
+				// Tạo lại URL với giá trị mới
+				url = urlParts[0] + '?' + params.join('&');
+
+				// Cập nhật URL trên thanh địa chỉ mà không tải lại trang
+				window.history.replaceState({}, document.title, url);
+			} else {
+				// Nếu URL không có query, thêm key-value mới
+				url = url + '?' + key + '=' + value;
+				window.history.replaceState({}, document.title, url);
+			}
+
+			return url;
+		}
+
+
+		function sortProduct(button) {
+			var urlcurrent = window.location.href;
+			var urlRedirect = ""
+			var buttonValue = button.value;
+			if (buttonValue == 'price_low_to_hight' || buttonValue == 'price_hight_to_low') {
+				urlRedirect = updateQueryParamURL("SortOption", buttonValue, urlcurrent)
+			} else if (buttonValue == '<10tr') {
+				urlRedirect = updateQueryParamURL("ConditionPrice", buttonValue, urlcurrent)
+			} else if (buttonValue == '10tr-15tr') {
+				urlRedirect = updateQueryParamURL("ConditionPrice", buttonValue, urlcurrent)
+			} else if (buttonValue == '15tr-20tr') {
+				urlRedirect = updateQueryParamURL("ConditionPrice", buttonValue, urlcurrent)
+			} else if (buttonValue == '20tr-25tr') {
+				urlRedirect = updateQueryParamURL("ConditionPrice", buttonValue, urlcurrent)
+			} else if (buttonValue == '>25tr') {
+				urlRedirect = updateQueryParamURL("ConditionPrice", buttonValue, urlcurrent)
+			}
+
+			console.log(urlRedirect);
+			window.location.href = urlRedirect;
+		}
+	</script>
+
+}

@@ -5,6 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    int priceAfterDiscount = 0;
+    if (Model.DiscountPercentage != 0)
+    {
+        var discountPrice = (Model.DiscountPercentage / 100) * Model.Price;
+        priceAfterDiscount = Convert.ToInt32(Model.Price - discountPrice);
+    }
+    else
+    {
+        priceAfterDiscount = Convert.ToInt32(Model.Price);
+    }
+
+}
+
 <div class="container-fluid">
     <h1 class="mt-4">Chi tiết sản phẩm @Model.Name</h1>
     <ol class="breadcrumb mb-4">
@@ -45,6 +59,22 @@
                         </tr>
                         <tr>
                             <td class="font-weight-bold">
+                                Giảm giá
+                            </td>
+                            <td>
+                                @Model.DiscountPercentage.ToString() <span>%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">
+                                Tiền sau khi giảm giá
+                            </td>
+                            <td>
+                                @priceAfterDiscount.ToString("N0") <span>đ</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">
                                 Số lượng
                             </td>
                             <td>
@@ -58,11 +88,19 @@
                             <td>
                                 @{
                                     string html = @Model.Description;
-                                    string removeFirstFigure = html.Remove(0, 22);
-                                    string removeLastFigure = removeFirstFigure.Remove(removeFirstFigure.Length - 9);
-                                    string addedTableFormat = removeLastFigure.Insert(6, " class=\"table table-bordered table-striped\"");
+                                    string htmlResult = string.Empty;
+                                    if (html.Contains(@"<figure class='table''>")) // check is table
+                                    {
+                                        string removeFirstFigure = html.Remove(0, 22);
+                                        string removeLastFigure = removeFirstFigure.Remove(removeFirstFigure.Length - 9);
+                                        htmlResult = removeLastFigure.Insert(6, " class=\"table table-bordered table-striped\"");
+                                    }else
+                                    {
+                                        htmlResult = html;
+                                    }
+                                    
                                 }
-                                @Html.Raw(addedTableFormat)
+                                @Html.Raw(htmlResult)
                             </td>
                         </tr>
                         <tr>
@@ -83,7 +121,7 @@
                                 Ảnh đại diện
                             </td>
                             <td>
-                                <img style="width:150px;height:150px" src="@(Configuration["BaseAddress"] + Model.ThumbnailImage)" alt="Alternate Text" />
+                                <img style="width:150px;height:150px" src="@(Configuration["BaseAddressBackend"] + Model.ThumbnailImage)" alt="Alternate Text" />
                             </td>
                         </tr>
                         <tr>
@@ -91,7 +129,15 @@
                                 Ảnh đầy đủ
                             </td>
                             <td>
-                                <img style="width:250px;height:250px" src="@(Configuration["BaseAddress"] + Model.ProductImage)" alt="Alternate Text" />
+                                @if (!string.IsNullOrEmpty(Model.ProductImage))
+                                {
+                                    string[] arrProductImage = Model.ProductImage.Split(",");
+                                    foreach (string productImage in arrProductImage)
+                                    {
+                                        <img style="width:250px;height:250px" src="@(Configuration["BaseAddressBackend"] + productImage)" alt="Alternate Text" />
+                                        <br />
+                                    }
+                                } 
                             </td>
                         </tr>
                     </tbody>

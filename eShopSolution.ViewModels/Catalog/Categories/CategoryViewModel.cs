@@ -9,6 +9,8 @@ namespace eShopSolution.ViewModels.Catalog.Categories
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-    }
+        public string Alias { get; set; } 
+        public int idParent { set; get; }
+		public string Image { set; get; }
+	}
 }

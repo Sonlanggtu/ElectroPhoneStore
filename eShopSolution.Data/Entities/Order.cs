@@ -14,6 +14,7 @@ namespace eShopSolution.Data.Entities
         public string ShipName { set; get; }
         public string ShipAddress { set; get; }
         public string ShipPhoneNumber { set; get; }
+        public string Note { set; get; }
         public decimal Total { get; set; }
         public string PaymentMethod { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }

@@ -25,6 +25,9 @@ namespace eShopSolution.ViewModels.Catalog.Products
 
             RuleFor(x => x.Details)
                 .MaximumLength(10000).WithMessage("Mô tả chi tiết không được quá 10.000 ký tự");
+
+            RuleFor(x => x.Alias)
+                .NotNull().WithMessage("Alias không được trống");
         }
     }
 }

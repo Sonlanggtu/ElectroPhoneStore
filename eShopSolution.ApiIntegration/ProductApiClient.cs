@@ -39,7 +39,7 @@ namespace eShopSolution.ApiIntegration
                 .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var requestContent = new MultipartFormDataContent();
@@ -57,20 +57,29 @@ namespace eShopSolution.ApiIntegration
 
             if (request.ProductImage != null)
             {
-                byte[] data;
-                using (var br = new BinaryReader(request.ProductImage.OpenReadStream()))
+                foreach (var productImgItem in request.ProductImage)
                 {
-                    data = br.ReadBytes((int)request.ProductImage.OpenReadStream().Length);
+                    byte[] data;
+                    using (var br = new BinaryReader(productImgItem.OpenReadStream()))
+                    {
+                        data = br.ReadBytes((int)productImgItem.OpenReadStream().Length);
+                    }
+                    ByteArrayContent bytes = new ByteArrayContent(data);
+
+                    requestContent.Add(bytes, "productImage", productImgItem.FileName);
                 }
-                ByteArrayContent bytes = new ByteArrayContent(data);
-                requestContent.Add(bytes, "productImage", request.ProductImage.FileName);
             }
 
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
+            requestContent.Add(new StringContent(request.Alias.ToString()), "Alias");
+            requestContent.Add(new StringContent(request.OrderFeatured.ToString()), "OrderFeatured");
+            requestContent.Add(new StringContent(request.Purpose.ToString()), "Purpose");
             requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? " " : request.Name.ToString()), "name");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? " " : request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ShortDescription) ? " " : request.ShortDescription.ToString()), "ShortDescription");
+            requestContent.Add(new StringContent(request.DiscountPercentage.ToString()), "DiscountPercentage");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? " " : request.Details.ToString()), "details");
 
             var response = await client.PostAsync($"/api/products/", requestContent);
@@ -85,7 +94,7 @@ namespace eShopSolution.ApiIntegration
                 .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             var requestContent = new MultipartFormDataContent();
@@ -103,20 +112,31 @@ namespace eShopSolution.ApiIntegration
 
             if (request.ProductImage != null)
             {
-                byte[] data;
-                using (var br = new BinaryReader(request.ProductImage.OpenReadStream()))
+                foreach (var productImgItem in request.ProductImage)
                 {
-                    data = br.ReadBytes((int)request.ProductImage.OpenReadStream().Length);
+                    byte[] data;
+                    using (var br = new BinaryReader(productImgItem.OpenReadStream()))
+                    {
+                        data = br.ReadBytes((int)productImgItem.OpenReadStream().Length);
+                    }
+                    ByteArrayContent bytes = new ByteArrayContent(data);
+
+                    requestContent.Add(bytes, "productImage", productImgItem.FileName);
                 }
-                ByteArrayContent bytes = new ByteArrayContent(data);
-                requestContent.Add(bytes, "productImage", request.ProductImage.FileName);
             }
 
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ThumbnailImageSavedStr) ? string.Empty : request.ThumbnailImageSavedStr), "ThumbnailImageSavedStr");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ProductImageSavedStr) ? string.Empty : request.ProductImageSavedStr), "ProductImageSavedStr");
+            requestContent.Add(new StringContent(request.OrderFeatured.ToString()), "OrderFeatured");
+            requestContent.Add(new StringContent(request.Purpose.ToString()), "Purpose");
+            requestContent.Add(new StringContent(request.Alias.ToString()), "Alias");
             requestContent.Add(new StringContent(request.Price.ToString()), "price");
             requestContent.Add(new StringContent(request.Stock.ToString()), "stock");
             requestContent.Add(new StringContent(request.CategoryId.ToString()), "categoryId");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Name) ? " " : request.Name.ToString()), "name");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Description) ? " " : request.Description.ToString()), "description");
+            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.ShortDescription) ? " " : request.ShortDescription.ToString()), "ShortDescription");
+            requestContent.Add(new StringContent(request.DiscountPercentage.ToString()), "DiscountPercentage");
             requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Details) ? " " : request.Details.ToString()), "details");
 
             var response = await client.PutAsync($"/api/products/" + request.Id, requestContent);
@@ -133,7 +153,7 @@ namespace eShopSolution.ApiIntegration
             var data = await GetAsync<PagedResult<ProductViewModel>>(
                 $"/api/products/paging?pageIndex={request.PageIndex}" +
                 $"&pageSize={request.PageSize}" +
-                $"&keyword={request.Keyword}&categoryId={request.CategoryId}&sortOption={request.SortOption}");
+                $"&keyword={request.Keyword}&categoryId={request.CategoryId}&sortOption={request.SortOption}&CategoryUrl={request.CategoryUrl}&Purpose={request.Purpose}&ConditionPrice={request.ConditionPrice}");
 
             return data;
         }
@@ -155,13 +175,13 @@ namespace eShopSolution.ApiIntegration
             return data;
         }
 
-        public async Task<List<ProductViewModel>> GetFeaturedProducts(string languageId, int take)
+        public async Task<List<ProductViewModel>> GetFeaturedProducts(int take)
         {
             var data = await GetListAsync<ProductViewModel>($"/api/products/featured/{take}");
             return data;
         }
 
-        public async Task<List<ProductViewModel>> GetLatestProducts(string languageId, int take)
+        public async Task<List<ProductViewModel>> GetLatestProducts( int take)
         {
             var data = await GetListAsync<ProductViewModel>($"/api/products/latest/{take}");
             return data;
@@ -175,7 +195,7 @@ namespace eShopSolution.ApiIntegration
                             .GetString(SystemConstants.AppSettings.Token);
 
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress]);
+            client.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddressBackend]);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
             var json = JsonConvert.SerializeObject(model);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");

@@ -1,6 +1,8 @@
-﻿using eShopSolution.ViewModels.Catalog.Categories;
+﻿using eShopSolution.Data.Entities;
+using eShopSolution.ViewModels.Catalog.Categories;
 using eShopSolution.ViewModels.Catalog.Products;
 using eShopSolution.ViewModels.Common;
+using eShopSolution.ViewModels.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,5 +23,9 @@ namespace eShopSolution.Application.Catalog.Categories
         Task<CategoryViewModel> GetById(int id);
 
         Task<List<CategoryViewModel>> GetAll();
+		Task<List<CategoryTreeNode>> LoadCategoryTrees();
+        Task<CategoryTreeNodeParent> LoadCategoryTreeById(int categoryId);
+        Task<List<CategoryViewModel>> LoadChildCategoryById(int categoryId);
+
     }
 }

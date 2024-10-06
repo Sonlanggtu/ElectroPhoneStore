@@ -24,15 +24,15 @@ namespace eShopSolutionBackendApi.Controllers
         }
 
         [HttpPost("createOrder")]
-        [Authorize]
-        public IActionResult CreateOrder([FromBody] CheckoutRequest request)
+        //[Authorize]
+        public async Task<IActionResult> CreateOrder([FromBody] CheckoutRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = _orderService.Create(request);
+            var result =  await _orderService.Create(request);
 
             return Ok(result);
         }
