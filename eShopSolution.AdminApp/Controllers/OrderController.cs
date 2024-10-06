@@ -45,13 +45,10 @@ namespace eShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Detail(string name, int orderId)
         {
             var order = await _orderApiClient.GetOrderById(orderId);
-            order.Name = name;
 
             foreach (var item in order.OrderDetails)
             {
                 var product = await _productApiClient.GetById(item.ProductId);
-                item.Name = product.Name;
-                item.Price = product.Price;
                 item.ThumbnailImage = product.ThumbnailImage;
             }
 

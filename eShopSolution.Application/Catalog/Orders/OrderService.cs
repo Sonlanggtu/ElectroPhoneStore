@@ -41,14 +41,16 @@ namespace eShopSolution.Application.Catalog.Orders
 				{
 					var product = await _context.Products.FindAsync(item.ProductId);
 
-					orderDetails.Add(new OrderDetail()
+                    var price = product.DiscountPercentage != 0 ? Convert.ToInt32(product.Price - ((product.DiscountPercentage / 100) * product.Price)) : Convert.ToInt32(product.Price);
+
+                    orderDetails.Add(new OrderDetail()
 					{
 						Product = product,
 						Quantity = item.Quantity,
 						NameProduct = product.Name,
 						ProductId = product.Id,
-						Price = product.Price,
-						TotalItem = product.DiscountPercentage == 0 ? product.Price * item.Quantity : product.Price * item.Quantity * product.DiscountPercentage,
+						Price = price,
+						TotalItem = price * item.Quantity,
 						OrderId = idOrderMax + 1
 					});
 
@@ -279,6 +281,8 @@ namespace eShopSolution.Application.Catalog.Orders
                 {
                     ProductId = item.ProductId,
                     Quantity = item.Quantity,
+                    Price = item.Price,
+                    Name = item.NameProduct
                 });
             }
 
