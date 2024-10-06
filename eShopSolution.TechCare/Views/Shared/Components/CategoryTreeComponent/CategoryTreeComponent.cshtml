@@ -18,11 +18,15 @@
                     @foreach (var categoryItem in categoryTrees)
                     {
                         string hrefcategory = $"/danh-muc-san-pham/{categoryItem.Alias}";
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name">@categoryItem.Name </a>
+                        <li class="nav-item dropdown">   
                             @if (categoryItem.Children != null && categoryItem.Children.Any())
                             {
+                                <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name">@categoryItem.Name <i class="caret"></i> </a>
                                 RenderHtmlTree(categoryItem.Children);
+                            }
+                            else
+                            {
+                                <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name">@categoryItem.Name </a>
                             }
                         </li>
 
@@ -39,10 +43,15 @@
         {
             string hrefcategory = $"/danh-muc-san-pham/{categoryItem.Alias}";
             <li class="nav-item dropdown">
-                <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name"><img class="icon-img lazyload" alt="@categoryItem.Name" data-src="@($"{Configuration["BaseAddressBackend"]}{categoryItem.Image}")" /> <span>@categoryItem.Name</span></a>
+                
                 @if (categoryItem.Children != null && categoryItem.Children.Any())
                 {
+                    <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name"><img class="icon-img lazyload" alt="@categoryItem.Name" data-src="@($"{Configuration["BaseAddressBackend"]}{categoryItem.Image}")" /> <span>@categoryItem.Name</span><i class="caret"></i></a>
                     RenderHtmlTree(categoryItem.Children);
+                }
+                else
+                {
+                    <a class="nav-link" href="@hrefcategory" title="@categoryItem.Name"><img class="icon-img lazyload" alt="@categoryItem.Name" data-src="@($"{Configuration["BaseAddressBackend"]}{categoryItem.Image}")" /> <span>@categoryItem.Name</span></a>
                 }
             </li>
         }
